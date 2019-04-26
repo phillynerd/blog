@@ -17,21 +17,7 @@
       <pubDate>Fri, 26 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/2019/04/hello-world/</guid>
-      <description>
-
-
-&lt;p&gt;Well this took me way too long to get up and running! But here we are :) Hello, and welcome! </description>
-    </item>
-    
-    <item>
-      <title>Hello R Markdown</title>
-      <link>/2015/07/hello-r-markdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      
-      <guid>/2015/07/hello-r-markdown/</guid>
-      <description>R MarkdownThis is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
+      <description>Well this took me way too long to get up and running! But here we are :) Hello, and welcome! Why another R blog?I’m starting this blog for a few reasons. First, I want to use it as a way to document my own R journey. I figured I’d document it for lots of reasons: a way to showcase my own work, career development, networking, everyone in the R community says you should do it, blah blah blah.</description>
     </item>
     
   </channel>
