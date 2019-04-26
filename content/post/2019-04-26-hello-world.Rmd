@@ -14,7 +14,7 @@ coverImage: https://res.cloudinary.com/phillynerd/image/upload/v1556297174/Famin
 coverSize: full
 ---
 
-Well this took me way too long to get up and running! But here we are :) Hello, and welcome! <!--more-->
+Well this took me way too long to get up and running! But here we are :) Hello, and welcome!
 
 ## Why another R blog?
 I'm starting this blog for a few reasons.  First, I want to use it as a way to document my own R journey.  I figured I'd document it for lots of reasons: a way to showcase my own work, career development, networking, everyone in the R community says you should do it, blah blah blah.  Second, I'm the only R user at my organization, so I figured this is another way for me to develop my skills, get feedback from the amazing r community, etc. Plus, the work I do can't really be shared outside of my organization, since it's all highly protected health information on over half a million Philadelphians.  So it's a good way for me to get some work that I can share out there.  Third, I want to be able to share various things I've learned throughout this process, whether it's R-specific, general career advice for other women in similar situations, or some other nugget I've collected over the years. 
