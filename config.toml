@@ -19,7 +19,7 @@ languageCode = "en-us"
 defaultContentLanguage = "en-us"
 title = "A Girl Has No R Blog"
 theme = "hugo-tranquilpeak-theme"
-disqusShortname = "hugo-tranquilpeak-theme"
+disqusShortname = "https-phillynerd-netlify-com"
 # googleAnalytics = "UA-123-45"
 paginate = 7
 canonifyurls = true
@@ -120,7 +120,7 @@ canonifyurls = true
   # If false it will flat categories.
   hierarchicalCategories = true
 
-  description = "Hugo tranquilpeak theme demo"
+  description = "A Girl Has No R Blog"
 
   # Customization
   # Define the behavior of the sidebar
