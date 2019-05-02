@@ -1,0 +1,336 @@
+---
+title: Lock all the legs!
+author: ''
+date: '2019-04-30'
+slug: lock-all-the-legs
+categories:
+  - BJJ
+tags:
+  - r
+  - data exploration
+  - data visualization
+  - ggplot
+keywords:
+  - tech
+  
+thumbnailImagePosition: right
+coverImage: http://dotb.tc0bblfg2d81v7kurec.netdna-cdn.com/wp-content/uploads/2016/11/All-the-things-meme-blank.png
+coverSize: full
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = F)
+
+#libraries####
+library(tidyverse)
+library(scales)
+library(kableExtra)
+
+#reading in data
+bjj_unique <- read_csv("C:/Users/jstre/Documents/bjj/bjj_unique.csv")
+
+```
+
+Welcome, friends, to my first data post! So here's the background: I love brazilian jiu jitsu (bjj). I did martial arts when I was a kid (bonus story at the end about my favorite martial art moment ever), but stopped going after I had a knee injury that sidelined me for several months.  I'd always toyed with the idea of going back, but my wife made me realize how much I actually missed sports when I saw her being crazy active with her HIIT gym.  So nearly 3 years ago, with my wife's encouragement, I walked into our nearest bjj gym, learned to throw a sweaty hairy guy who was probably twice my weight, and have been hooked ever since. 
+
+So of course, as I was trying to improve my R skills, I came across that sage advice of "stop taking online courses and find a data passion project."  And what would be cooler data than BJJ competition data? I scoured the internet for bjj data, and of course, no one really had anything. I reached out to a few competitions, but they were all like "Sorry, our data is a hot mess and the one guy who has it doesn't want to be bothered trying to get it together for you."  And then I came across a few references to the US Grappling dataset.  So I sent them an email, and those guys just sent me a link to all their submission only data!
+
+Initially, I used this dataset to learn about cleaning data (I rarely have to deal with things like missing data at work, since I work with claims data and claims just wont be paid if data is missing or incorrect), tidyverse, purrr, and markdown.  It was a super fun project and I learned a ton. But then, my coach (a massive man who also happens to be a 6th degree black belt) came and asked me for data. And since I fear for both life and limb, here I am! Doing a leg lock post! Please don't hurt me Phil...
+
+I KID! I had already planned on doing a few jiu jitsu posts because I think it's a pretty fun dataset, and most bjj folks have only looked at total counts and stuff like that. 
+
+OK, so before we dive in to the data, I'm sure a bunch of you are already wondering wtf is bjj? It's this awesome martial art that predominantly focuses on fighting from the ground. We have throws and stuff to get you to the ground, but much of what we do is lovingly referred to as "pajama wrestling."  And the "goal" (at least for submission only competitions) is to get your opponent to tap, typically through joint locks (armbars, kimuras, foot locks, etc) or chokes (rear naked choke, guillotines, ezekiels, etc).
+
+## Setting the stage
+For this analysis, we're specifically interested in leg and foot locks.  They are one of those groups of submissions that are kind of trendy right now (see any post about John Danaher and his 4 part system), and they also have a bit of a bad-boy reputation (look up heel hook memes. Go ahead. I'll wait).
+
+But how often are people actually going for leg locks? Are they increasing in popularity? Let's take a look! So of the 6418 adult-only submissions I have (excluding ref decisions, no submission listed, matches that ended in DQ, matches that didn't end in a tap, and forfeits), 10.1% end in leg locks or foot locks. 
+
+```{r Percent all submissions in footlock/leglock cat}
+nonsubs <- c("unknown", "ref", "DQ", "other - not tap", "forfeit")
+
+ bjj_unique %>% 
+  filter(!(SubmissionCategory %in% nonsubs), Division != "juvenile") %>% 
+  group_by(SubmissionCategory) %>% 
+  tally() %>% 
+  mutate(denom = sum(n),
+         percent = round(n/denom * 100, 1)) %>% 
+  filter(SubmissionCategory %in% c("foot", "leg")) %>% 
+  kable(booktabs = T) %>% 
+  kable_styling(full_width = F)
+```
+
+If we break those larger categories down further, we can see that straight ankle lock reigns supreme:
+
+```{r freq leg lock types}
+bjj_unique %>% 
+  filter(SubmissionCategory %in% c("foot", "leg")) %>% 
+  group_by(CleanedSubmission) %>% 
+  tally() %>% 
+  mutate(denom = sum(n),
+         perc = n/denom) %>%
+  arrange(-perc) %>% 
+  ggplot(aes(x = reorder(CleanedSubmission, -perc), y = perc)) +
+  geom_bar(stat = "identity", fill = "#efbc39") +
+  labs(title = "Frequency of Specific Leg and Foot Locks",
+       x = "Submissions",
+       y = "Percent of all foot & leg locks \n(denom = 647)",
+       subtitle = paste0("Source: US Grappling Submission Only Events - Adults, ", min(bjj_unique$Year), "-", max(bjj_unique$Year)),
+       caption = "@phillynerd | phillynerd.netlify.com") +
+  scale_y_continuous(label = percent) +
+  theme_dark() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+This isn't super surprising.  Straight ankle lock is probably the foot lock we all learn first, plus it's allowed in gi and no-gi.  I'm also pretty sure most competitions allow it at most, if not all, belt levels (as opposed to something like knee bars, which some competitions limit to brown and black belts only).
+
+Over time, it looks like foot locks are more popular than leglocks, and they're increasing in popularity overall (although there was a big dip around 2011).  
+```{r leg locks over time}
+#freq of leg locks by year
+
+bjj_unique %>% 
+  filter(!(SubmissionCategory %in% nonsubs), Division != "juvenile") %>% 
+  group_by(Year, SubmissionCategory) %>% 
+  tally() %>% 
+  mutate(denom = sum(n),
+         perc = n/denom) %>% 
+  filter(SubmissionCategory %in% c("foot", "leg")) %>% 
+  ggplot(aes(x = Year, y = perc, color = SubmissionCategory, group = SubmissionCategory)) +
+  geom_line(alpha = .3, linetype = 2) +
+  geom_smooth(se = F)+
+  geom_point() +
+  labs(title = "Trends in Foot and Leg Locks Over Time",
+       y = "Percent of All Submissions \n (Denom: Total N Submissions Per Year)",
+       color = "Submission Type",
+       subtitle = paste0("Source: US Grappling Submission Only Events - Adult, ", 
+                        min(bjj_unique$Year), "-", max(bjj_unique$Year)),
+       caption = "Leg locks include submissions labeled knee bars, leg locks, or calf slicers \n@phillynerd | phillynerd.netlify.com") + 
+  scale_y_continuous(label = percent) +
+  scale_colour_manual(values = c("#ffb200", "#f4d78d")) +
+  theme_dark()
+```
+
+I initially wondered if the decline in popularity for leg locks has something to do with the proportion of lower belts, since again, 2/3 of the leg lock options (knee bars and calf slicers) are often reserved for higher belts.  And the data do seem to bear this out a bit.
+
+```{r percent advanced cmpetitors}
+bjj_unique %>% 
+  filter(!(SubmissionCategory %in% nonsubs),
+         is.na(Division) == F, is.na(Skill_Belt) == F, Skill_Belt != "30+") %>% 
+  mutate(Skill = ifelse(Division == "juvenile" | Division != "juvenile" & Skill_Belt %in% c("blue", "white", "beg", "int"), 
+                        "Beginner", "Advanced")) %>% 
+  group_by(Year, Skill) %>% 
+  tally() %>% 
+  mutate(denom = sum(n),
+         perc = n/sum(n)) %>% 
+  filter(Skill == "Advanced") %>% 
+  ggplot(aes(x = as.numeric(Year), y = perc, color = Skill)) +
+  geom_line(alpha = .5, linetype = 2) +
+  geom_smooth(method = lm, se = F) +
+  labs(title = "Percent of Advanced Competitors",
+       caption = "Advanced defined as adults who are purple and above, or listed in advanced classes \n@phillynerd | phillynerd.netlify.com",
+       x = "Year",
+       y = "Percent of all ranked competitors") +
+scale_y_continuous(limits = c(0, .5), label = percent)
+```
+
+But then I checked out the rules for US grappling - and it looks like in no-gi, they allow all adults to do straight ankle locks and knee bars, so that hypothesis goes out the window a bit (in gi, knee bars are only legal for brown and black). But it is an important reminder of how important the context for your data is.  
+
+## Gi vs No-Gi
+
+Gi and no-gi should also have some impact on the frequency of foot locks.  Many footlocks are banned in gi, like toe holds and heel hooks, plus gi typically has funny rules about "reaping the knee" (it has to do with foot placement, but don't ask me for more details than that - I just know people bitch about it in gi but not in no-gi).  On the flip side, in no-gi you not only gain heel hooks, but you also lose a lot of gi-specific moves, like collar chokes.  So foot locks may become a better option.
+
+```{r gi v nogi}
+#trends by gi_nogi
+bjj_unique %>% 
+  filter(!(SubmissionCategory %in% nonsubs) & Gi_Nogi %in% c("gi", "no gi") & Division != "juvenile") %>% 
+  group_by(Year, Gi_Nogi, SubmissionCategory) %>% 
+  tally() %>% 
+  mutate(denom = sum(n),
+         perc = n/denom) %>% 
+  filter(SubmissionCategory %in% c("foot", "leg")) %>% 
+  ggplot(aes(x = Year, y = perc, color = SubmissionCategory, group = SubmissionCategory)) +
+  geom_line(alpha = .5, linetype = 2) +
+  geom_smooth(se = F)+
+  geom_point() +
+  labs(title = "Trends in Foot and Leg Locks Over Time; Gi vs No-Gi",
+       y = "Percent of All Submissions \n (Denom: Total N Submissions Per Year)",
+       color = "Submission Type",
+       subtitle = paste0("Source: US Grappling Submission Only Events - Adults ", 
+                         min(bjj_unique$Year), "-", max(bjj_unique$Year)),
+       caption = "Leg locks include submissions labeled knee bars, leg locks, or calf slicers\n@phillynerd | phillynerd.netlify.com") +
+  scale_colour_manual(values = c("#ffb200", "#f4d78d")) +
+  scale_y_continuous(label = percent) +
+  theme_dark() +
+  facet_wrap(~Gi_Nogi) 
+```
+
+And again, the data show what I would expect - there are fewer leg locks in gi vs no-gi, since they are reserved for advanced belts; and foot locks are less common in gi vs no gi (although they are increasing in popularity across the board).  Again, not surprising since we have more variety of foot-locks in no-gi compared to gi.  Just to illustrate that further, I faceted the first figure we started off with by gi and no-gi:
+```{r freq of types by gi/nogi}
+bjj_unique %>% 
+  filter(SubmissionCategory %in% c("foot", "leg"),
+         Gi_Nogi %in% c("gi", "no gi")) %>% 
+  group_by(Gi_Nogi, CleanedSubmission) %>% 
+  tally() %>% 
+  mutate(denom = sum(n),
+         perc = n/denom) %>%
+  arrange(-perc) %>% 
+  ggplot(aes(x = reorder(CleanedSubmission, -perc), y = perc)) +
+  geom_bar(stat = "identity", fill = "#efbc39") +
+  labs(title = "Frequency of Specific Leg and Foot Locks",
+       x = "Submissions",
+       y = "Percent of all foot & leg locks",
+       subtitle = paste0("Source: US Grappling Submission Only Events - Adults, ", min(bjj_unique$Year), "-", max(bjj_unique$Year)),
+       caption = "@phillynerd | phillynerd.netlify.com") +
+  scale_y_continuous(label = percent) +
+  theme_dark() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~Gi_Nogi)
+
+```
+
+While straight ankle locks are still the most popular, they have a much bigger lead in the gi rankings compared to no-gi, where heel hooks are a close second, and knee bars are not far behind. 
+
+And just as an aside on the data itself, ankle locks may or may not be straight ankle locks - there's no real naming convention in the data, and there's lots of variation on how different gyms refer to the same move.  I kept things as separate as possible unless I knew for a fact they were referring to the same thing (there were some helpful documentation notes on some of these, but mostly it came down to googling weird submissions I'd never heard of).  And while I feel like ankle locks usually refer to straight ankle locks, I did find a few other ankle locks when I googled it (like tripod ankle lock). So I just kept them separate.  And if you're interested in more detail on how I cleaned this data, I'll have the script on GitHub, and that may be another post down the line.
+
+## Gender
+
+The last thing I wanted to look at was the gender difference in leg locks.  This ended up being one of the more surprising figures I produced:
+
+```{r gender}
+#trends by gender
+bjj_unique %>% 
+  filter(!(SubmissionCategory %in% nonsubs) & Division %in% c("women", "men", "30+ men")) %>% 
+  mutate(Division = ifelse(Division == "women", "women", "men")) %>% 
+  group_by(Year, Division, SubmissionCategory) %>% 
+  tally() %>% 
+  mutate(denom = sum(n),
+         perc = n/denom) %>% 
+  filter(SubmissionCategory %in% c("foot", "leg")) %>% 
+  ggplot(aes(x = Year, y = perc, color = SubmissionCategory, group = SubmissionCategory)) +
+  geom_line(linetype = 2) +
+  geom_point() +
+ # geom_smooth(se = F)+
+  labs(title = "Number of Foot and Leg Locks Over Time by Gender",
+       y = "Percent of All Submissions \n (Denom: Total N Submissions Per Year)",
+       color = "Submission Type",
+       subtitle = paste0("Source: US Grappling Submission Only Events - Adults ", 
+                         min(bjj_unique$Year), "-", max(bjj_unique$Year)),
+       caption = "Leg locks include submissions labeled knee bars, leg locks, or calf slicers\n @phillynerd | phillynerd.netlify.com") +
+  scale_colour_manual(values = c("#ffb200", "#f4d78d")) +
+  scale_y_continuous(label = percent) +
+  theme_dark() +
+  facet_wrap(~Division) 
+
+```
+
+I initially generated this with the same geom_smooth function I added to all the other figures, but you'll note there are very few data points on the women's side, so ggplot couldn't compute the loess curve. Which got me wondering, why are there entire years that go by where women don't do foot locks? As a woman who loves a good heel hook, I decided to dig into this a bit more.
+
+My first thought is maybe there are just no women competing in those years.  And it looks like 2011 is the only year where men compete but there are no female competitors (there's no data for anyone in 2012).  There are also only 7 female competitors in 2010, but in most other years there are over 50 female competitors, so I would expect some more foot and leg locks in the data if women were using them in comparable proportions to men.  
+
+```{r}
+bjj_unique %>% 
+  filter(!(SubmissionCategory %in% nonsubs) & Division %in% c("women", "men", "30+ men")) %>% 
+  mutate(Division = ifelse(Division == "women", "women", "men")) %>% 
+  group_by(Year, Division) %>% 
+  tally() %>% 
+  ggplot(aes(x = Year, y = n, color = Division)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Number of Competitors by Year",
+          subtitle = paste0("Source: US Grappling Submission Only Events - Adults ", 
+                         min(bjj_unique$Year), "-", max(bjj_unique$Year)),
+       caption = "@phillynerd | phillynerd.netlify.com") +
+  geom_label(aes(label = n, fill = Division), size = 3, color = 'black', alpha = .4, label.size = 0) +
+  scale_y_continuous(limits = c(0, 1200)) +
+  theme_dark()
+  
+```
+Let's try to slice it another way.  What if we look at the breakdown of all submission categories for each year, by gender? It looks like women do choose leg locks a bit less often than their male counterparts, and it looks like they're choosing arm locks instead. (Also, data struggle side note - this is the only way I could think of to highlight footlocks - by creating the FL flag and then using fill to draw a line around them. But the line isn't as thick as I'd like it to be.  What else could I have done? Is there a way to make the fill line thicker?)
+
+```{r}
+bjj_unique %>% 
+  filter(!(SubmissionCategory %in% nonsubs) & Division %in% c("women", "men", "30+ men")) %>% 
+  mutate(Division = ifelse(Division == "women", "women", "men")) %>% 
+  group_by(Year, Division, SubmissionCategory) %>% 
+  tally() %>% 
+  mutate(FL = ifelse(SubmissionCategory %in% c("foot","leg"), "Yes", "No")) %>% 
+  ggplot(aes(x = Year, y = n, fill = SubmissionCategory, color = FL)) +
+  geom_bar(stat = "identity", position = position_fill()) +
+  labs(title = "If Women Aren't Doing Footlocks, What Are They Doing?",
+      subtitle = paste0("Source: US Grappling Submission Only Events - Adults ", 
+                         min(bjj_unique$Year), "-", max(bjj_unique$Year)),
+       y = "Percent of All Submissions",
+       fill = "Submission Category",
+      caption = "@phillynerd | phillynerd.netlify.com") +
+  facet_wrap(~Division) +
+  scale_fill_viridis_d(option = "D") +
+  scale_color_manual(values = c(0, "#f442e5")) +
+  scale_y_continuous(label = percent) +
+  guides(color = F) +
+  theme_dark()
+```
+In the next figure, I cleaned this up a bit to collapse some of the categories and see if women really do prefer attacking arms over other options.  
+
+```{r What Limbs People Prefer to Attack}
+bjj_unique %>% 
+  filter(!(SubmissionCategory %in% nonsubs) & Division %in% c("women", "men", "30+ men")) %>% 
+  mutate(Division = ifelse(Division == "women", "women", "men"),
+         BroadSubcat = case_when(SubmissionCategory %in% c("armbar", "shoulder", "wrist") ~ "Arm",
+                                 SubmissionCategory %in% c("foot", "leg") ~ "Leg",
+                                 SubmissionCategory %in% c("choke", "triangle") ~ "Neck", #grouping triangles here since triangles that specified armbars were classified under armbar
+                                 TRUE ~ "Other")) %>% 
+  group_by(Year, BroadSubcat, Division) %>% 
+  tally() %>% 
+  mutate(FL = ifelse(BroadSubcat == "Leg", "Yes", "No")) %>% 
+  ggplot(aes(x = Year, y = n, fill = BroadSubcat, group = BroadSubcat)) +
+  geom_bar(stat = "identity", position = position_fill()) +
+  geom_label(aes( label = n), position = position_fill(vjust = .5), size = 2.5, fill = "white", alpha = .4, label.size = 0, label.padding = unit(.15, "lines")) +
+  labs(title = "Do men and women attack different limbs? Yearly Data",
+       subtitle = paste0("Source: US Grappling Submission Only Events - Adults ", 
+                  min(bjj_unique$Year), "-", max(bjj_unique$Year)),
+       y = "Percent of All Submissions",
+       fill = "Limb of Choice",
+       caption = "@phillynerd | phillynerd.netlify.com") +
+  facet_wrap(~Division) +
+  scale_fill_viridis_d(option = "D") +
+  scale_y_continuous(label = percent) +
+  #scale_color_manual(values = c(0, "#f442e5")) +
+  guides(color = F) +
+  theme_dark()
+```
+It does look like women have a slight preference for arms, especially in more recent years (although chokes are always in the running).  In contrast, men seem to have a preference for chokes, although arm attacks are never far off.  And of course, bringing it back to our leg-lock theme for this post, while leg attacks are a distant third in terms of preference for both genders, they do seem to be a bigger part of mens' submissions compared to womens'.
+
+Let's do one last roll-up to see what this looks like overall.
+```{r}
+bjj_unique %>% 
+  filter(!(SubmissionCategory %in% nonsubs) & Division %in% c("women", "men", "30+ men")) %>% 
+  mutate(Division = ifelse(Division == "women", "women", "men"),
+         BroadSubcat = case_when(SubmissionCategory %in% c("armbar", "shoulder", "wrist") ~ "Arm",
+                                 SubmissionCategory %in% c("foot", "leg") ~ "Leg",
+                                 SubmissionCategory %in% c("choke", "triangle") ~ "Neck", #grouping triangles here since triangles that specified armbars were classified under armbar
+                                 TRUE ~ "Other")) %>% 
+  group_by(BroadSubcat, Division) %>% 
+  tally() %>% 
+  mutate(FL = ifelse(BroadSubcat == "Leg", "Yes", "No")) %>% 
+  ggplot(aes(x = Division, y = n, fill = BroadSubcat, group = BroadSubcat)) +
+  geom_bar(stat = "identity", position = position_fill()) +
+  geom_label(aes( label = n), position = position_fill(vjust = .5), size = 2.5, fill = "white", alpha = .4, label.size = 0, label.padding = unit(.15, "lines")) +
+  labs(title = "Do men and women attack different limbs?",
+       subtitle = paste0("Source: US Grappling Submission Only Events - Adults ", 
+                  min(bjj_unique$Year), "-", max(bjj_unique$Year)),
+       y = "Percent of All Submissions",
+       fill = "Limb of Choice",
+       caption = "@phillynerd | phillynerd.netlify.com") +
+  scale_fill_viridis_d(option = "D") +
+  scale_y_continuous(label = percent) +
+  #scale_color_manual(values = c(0, "#f442e5")) +
+  guides(color = F) +
+  theme_dark()
+```
+
+
+Alright, well I feel like this is long enough at this point. There's still lots more to talk about with this data - I haven't gotten into my submission of choice (chokes), nor have I even touched the time to submission, which brings in a really interesting element.  Plus, as I mentioned before, there's a whole host of stuff to talk about in terms of data cleaning (but I figured diving in would be more fun. Plus, again, still scared of Phil...)
+
+Now what about that fun martial arts story I promised you? I figured that will be a fun way to wrap up and reward you for sticking it out this long. 
+
+In case you haven't noticed, I'm not what one would call "girly", in that I don't fit most societal notions of what women should do or how they should dress or what they should be interested in.  
+

@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.55.4 with theme Tranquilpeak 0.4.3-SNAPSHOT">
+<meta name="author" content="Jessica Streeter">
+<meta name="keywords" content="tech">
+<meta name="description" content="Welcome, friends, to my first data post! So here’s the background: I love brazilian jiu jitsu (bjj). I did martial arts when I was a kid (bonus story at the end about my favorite martial art moment ever), but stopped going after I had a knee injury that sidelined me for several months. I’d always toyed with the idea of going back, but my wife made me realize how much I actually missed sports when I saw her being crazy active with her HIIT gym.">
+
+
+<meta property="og:description" content="Welcome, friends, to my first data post! So here’s the background: I love brazilian jiu jitsu (bjj). I did martial arts when I was a kid (bonus story at the end about my favorite martial art moment ever), but stopped going after I had a knee injury that sidelined me for several months. I’d always toyed with the idea of going back, but my wife made me realize how much I actually missed sports when I saw her being crazy active with her HIIT gym.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lock all the legs!">
+<meta name="twitter:title" content="Lock all the legs!">
+<meta property="og:url" content="/2019/04/lock-all-the-legs/">
+<meta property="twitter:url" content="/2019/04/lock-all-the-legs/">
+<meta property="og:site_name" content="A Girl Has No R Blog">
+<meta property="og:description" content="Welcome, friends, to my first data post! So here’s the background: I love brazilian jiu jitsu (bjj). I did martial arts when I was a kid (bonus story at the end about my favorite martial art moment ever), but stopped going after I had a knee injury that sidelined me for several months. I’d always toyed with the idea of going back, but my wife made me realize how much I actually missed sports when I saw her being crazy active with her HIIT gym.">
+<meta name="twitter:description" content="Welcome, friends, to my first data post! So here’s the background: I love brazilian jiu jitsu (bjj). I did martial arts when I was a kid (bonus story at the end about my favorite martial art moment ever), but stopped going after I had a knee injury that sidelined me for several months. I’d always toyed with the idea of going back, but my wife made me realize how much I actually missed sports when I saw her being crazy active with her HIIT gym.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-04-30T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2019-04-30T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="BJJ">
+    
+  
+  
+    
+      <meta property="article:tag" content="r">
+    
+      <meta property="article:tag" content="data exploration">
+    
+      <meta property="article:tag" content="data visualization">
+    
+      <meta property="article:tag" content="ggplot">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@phillynerd">
+
+
+  <meta name="twitter:creator" content="@phillynerd">
+
+
+
+
+
+
+
+  <meta property="og:image" content="http://dotb.tc0bblfg2d81v7kurec.netdna-cdn.com/wp-content/uploads/2016/11/All-the-things-meme-blank.png">
+  <meta property="twitter:image" content="http://dotb.tc0bblfg2d81v7kurec.netdna-cdn.com/wp-content/uploads/2016/11/All-the-things-meme-blank.png">
+
+
+
+
+  <meta property="og:image" content="/img/jess.png">
+  <meta property="twitter:image" content="/img/jess.png">
+
+
+    <title>Lock all the legs!</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2019/04/lock-all-the-legs/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-nnm2spxvve8onlujjlegkkytaehyadd4ksxc1hyzzq9a2wvtrgbljqyulomn.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">A Girl Has No R Blog</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/jess.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/jess.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Jessica Streeter</h4>
+        
+          <h5 class="sidebar-profile-bio">I&rsquo;m Jess, a trained medical sociologist who left academia and stumbled into a career as a data scientist. I&rsquo;m a self professed nerd of many things, including R, data visualization, craft beer, Game of Thrones, and Jiu Jitsu. I&rsquo;m happily enjoying my life in Philly with my wife, our son, and all our amazing puppies. All of my opinions are my own.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/phillynerd">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/phillynerd">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      
+      
+      <span class="sidebar-button-desc"></span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-left
+              post-header-cover--full"
+       style="background-image:url('http://dotb.tc0bblfg2d81v7kurec.netdna-cdn.com/wp-content/uploads/2016/11/All-the-things-meme-blank.png')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Lock all the legs!
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-04-30T00:00:00Z">
+        
+  April 30, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/bjj">BJJ</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<p>Welcome, friends, to my first data post! So here’s the background: I love brazilian jiu jitsu (bjj). I did martial arts when I was a kid (bonus story at the end about my favorite martial art moment ever), but stopped going after I had a knee injury that sidelined me for several months. I’d always toyed with the idea of going back, but my wife made me realize how much I actually missed sports when I saw her being crazy active with her HIIT gym. So nearly 3 years ago, with my wife’s encouragement, I walked into our nearest bjj gym, learned to throw a sweaty hairy guy who was probably twice my weight, and have been hooked ever since.</p>
+<p>So of course, as I was trying to improve my R skills, I came across that sage advice of “stop taking online courses and find a data passion project.” And what would be cooler data than BJJ competition data? I scoured the internet for bjj data, and of course, no one really had anything. I reached out to a few competitions, but they were all like “Sorry, our data is a hot mess and the one guy who has it doesn’t want to be bothered trying to get it together for you.” And then I came across a few references to the US Grappling dataset. So I sent them an email, and those guys just sent me a link to all their submission only data!</p>
+<p>Initially, I used this dataset to learn about cleaning data (I rarely have to deal with things like missing data at work, since I work with claims data and claims just wont be paid if data is missing or incorrect), tidyverse, purrr, and markdown. It was a super fun project and I learned a ton. But then, my coach (a massive man who also happens to be a 6th degree black belt) came and asked me for data. And since I fear for both life and limb, here I am! Doing a leg lock post! Please don’t hurt me Phil…</p>
+<p>I KID! I had already planned on doing a few jiu jitsu posts because I think it’s a pretty fun dataset, and most bjj folks have only looked at total counts and stuff like that.</p>
+<p>OK, so before we dive in to the data, I’m sure a bunch of you are already wondering wtf is bjj? It’s this awesome martial art that predominantly focuses on fighting from the ground. We have throws and stuff to get you to the ground, but much of what we do is lovingly referred to as “pajama wrestling.” And the “goal” (at least for submission only competitions) is to get your opponent to tap, typically through joint locks (armbars, kimuras, foot locks, etc) or chokes (rear naked choke, guillotines, ezekiels, etc).</p>
+<div id="setting-the-stage" class="section level2">
+<h2>Setting the stage</h2>
+<p>For this analysis, we’re specifically interested in leg and foot locks. They are one of those groups of submissions that are kind of trendy right now (see any post about John Danaher and his 4 part system), and they also have a bit of a bad-boy reputation (look up heel hook memes. Go ahead. I’ll wait).</p>
+<p>But how often are people actually going for leg locks? Are they increasing in popularity? Let’s take a look! So of the 6418 adult-only submissions I have (excluding ref decisions, no submission listed, matches that ended in DQ, matches that didn’t end in a tap, and forfeits), 10.1% end in leg locks or foot locks.</p>
+<pre class="r"><code>nonsubs &lt;- c(&quot;unknown&quot;, &quot;ref&quot;, &quot;DQ&quot;, &quot;other - not tap&quot;, &quot;forfeit&quot;)
+
+ bjj_unique %&gt;% 
+  filter(!(SubmissionCategory %in% nonsubs), Division != &quot;juvenile&quot;) %&gt;% 
+  group_by(SubmissionCategory) %&gt;% 
+  tally() %&gt;% 
+  mutate(denom = sum(n),
+         percent = round(n/denom * 100, 1)) %&gt;% 
+  filter(SubmissionCategory %in% c(&quot;foot&quot;, &quot;leg&quot;)) %&gt;% 
+  kable(booktabs = T) %&gt;% 
+  kable_styling(full_width = F)</code></pre>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+SubmissionCategory
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+denom
+</th>
+<th style="text-align:right;">
+percent
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+foot
+</td>
+<td style="text-align:right;">
+531
+</td>
+<td style="text-align:right;">
+6418
+</td>
+<td style="text-align:right;">
+8.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+leg
+</td>
+<td style="text-align:right;">
+116
+</td>
+<td style="text-align:right;">
+6418
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+</tr>
+</tbody>
+</table>
+<p>If we break those larger categories down further, we can see that straight ankle lock reigns supreme:</p>
+<pre class="r"><code>bjj_unique %&gt;% 
+  filter(SubmissionCategory %in% c(&quot;foot&quot;, &quot;leg&quot;)) %&gt;% 
+  group_by(CleanedSubmission) %&gt;% 
+  tally() %&gt;% 
+  mutate(denom = sum(n),
+         perc = n/denom) %&gt;%
+  arrange(-perc) %&gt;% 
+  ggplot(aes(x = reorder(CleanedSubmission, -perc), y = perc)) +
+  geom_bar(stat = &quot;identity&quot;, fill = &quot;#efbc39&quot;) +
+  labs(title = &quot;Frequency of Specific Leg and Foot Locks&quot;,
+       x = &quot;Submissions&quot;,
+       y = &quot;Percent of all foot &amp; leg locks \n(denom = 647)&quot;,
+       subtitle = paste0(&quot;Source: US Grappling Submission Only Events - Adults, &quot;, min(bjj_unique$Year), &quot;-&quot;, max(bjj_unique$Year)),
+       caption = &quot;@phillynerd | phillynerd.netlify.com&quot;) +
+  scale_y_continuous(label = percent) +
+  theme_dark() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))</code></pre>
+<p><img src="/post/2019-04-30-lock-all-the-legs_files/figure-html/freq%20leg%20lock%20types-1.png" width="672" />
+This isn’t super surprising. Straight ankle lock is probably the foot lock we all learn first, plus it’s allowed in gi and no-gi. I’m also pretty sure most competitions allow it at most, if not all, belt levels (as opposed to something like knee bars, which some competitions limit to brown and black belts only).</p>
+<p>Over time, it looks like foot locks are more popular than leglocks, and they’re increasing in popularity overall (although there was a big dip around 2011).</p>
+<pre class="r"><code>#freq of leg locks by year
+
+bjj_unique %&gt;% 
+  filter(!(SubmissionCategory %in% nonsubs), Division != &quot;juvenile&quot;) %&gt;% 
+  group_by(Year, SubmissionCategory) %&gt;% 
+  tally() %&gt;% 
+  mutate(denom = sum(n),
+         perc = n/denom) %&gt;% 
+  filter(SubmissionCategory %in% c(&quot;foot&quot;, &quot;leg&quot;)) %&gt;% 
+  ggplot(aes(x = Year, y = perc, color = SubmissionCategory, group = SubmissionCategory)) +
+  geom_line(alpha = .3, linetype = 2) +
+  geom_smooth(se = F)+
+  geom_point() +
+  labs(title = &quot;Trends in Foot and Leg Locks Over Time&quot;,
+       y = &quot;Percent of All Submissions \n (Denom: Total N Submissions Per Year)&quot;,
+       color = &quot;Submission Type&quot;,
+       subtitle = paste0(&quot;Source: US Grappling Submission Only Events - Adult, &quot;, 
+                        min(bjj_unique$Year), &quot;-&quot;, max(bjj_unique$Year)),
+       caption = &quot;Leg locks include submissions labeled knee bars, leg locks, or calf slicers \n@phillynerd | phillynerd.netlify.com&quot;) + 
+  scale_y_continuous(label = percent) +
+  scale_colour_manual(values = c(&quot;#ffb200&quot;, &quot;#f4d78d&quot;)) +
+  theme_dark()</code></pre>
+<p><img src="/post/2019-04-30-lock-all-the-legs_files/figure-html/leg%20locks%20over%20time-1.png" width="672" /></p>
+<p>I initially wondered if the decline in popularity for leg locks has something to do with the proportion of lower belts, since again, 2/3 of the leg lock options (knee bars and calf slicers) are often reserved for higher belts. And the data do seem to bear this out a bit.</p>
+<pre class="r"><code>bjj_unique %&gt;% 
+  filter(!(SubmissionCategory %in% nonsubs),
+         is.na(Division) == F, is.na(Skill_Belt) == F, Skill_Belt != &quot;30+&quot;) %&gt;% 
+  mutate(Skill = ifelse(Division == &quot;juvenile&quot; | Division != &quot;juvenile&quot; &amp; Skill_Belt %in% c(&quot;blue&quot;, &quot;white&quot;, &quot;beg&quot;, &quot;int&quot;), 
+                        &quot;Beginner&quot;, &quot;Advanced&quot;)) %&gt;% 
+  group_by(Year, Skill) %&gt;% 
+  tally() %&gt;% 
+  mutate(denom = sum(n),
+         perc = n/sum(n)) %&gt;% 
+  filter(Skill == &quot;Advanced&quot;) %&gt;% 
+  ggplot(aes(x = as.numeric(Year), y = perc, color = Skill)) +
+  geom_line(alpha = .5, linetype = 2) +
+  geom_smooth(method = lm, se = F) +
+  labs(title = &quot;Percent of Advanced Competitors&quot;,
+       caption = &quot;Advanced defined as adults who are purple and above, or listed in advanced classes \n@phillynerd | phillynerd.netlify.com&quot;,
+       x = &quot;Year&quot;,
+       y = &quot;Percent of all ranked competitors&quot;) +
+scale_y_continuous(limits = c(0, .5), label = percent)</code></pre>
+<p><img src="/post/2019-04-30-lock-all-the-legs_files/figure-html/percent%20advanced%20cmpetitors-1.png" width="672" /></p>
+<p>But then I checked out the rules for US grappling - and it looks like in no-gi, they allow all adults to do straight ankle locks and knee bars, so that hypothesis goes out the window a bit (in gi, knee bars are only legal for brown and black). But it is an important reminder of how important the context for your data is.</p>
+</div>
+<div id="gi-vs-no-gi" class="section level2">
+<h2>Gi vs No-Gi</h2>
+<p>Gi and no-gi should also have some impact on the frequency of foot locks. Many footlocks are banned in gi, like toe holds and heel hooks, plus gi typically has funny rules about “reaping the knee” (it has to do with foot placement, but don’t ask me for more details than that - I just know people bitch about it in gi but not in no-gi). On the flip side, in no-gi you not only gain heel hooks, but you also lose a lot of gi-specific moves, like collar chokes. So foot locks may become a better option.</p>
+<pre class="r"><code>#trends by gi_nogi
+bjj_unique %&gt;% 
+  filter(!(SubmissionCategory %in% nonsubs) &amp; Gi_Nogi %in% c(&quot;gi&quot;, &quot;no gi&quot;) &amp; Division != &quot;juvenile&quot;) %&gt;% 
+  group_by(Year, Gi_Nogi, SubmissionCategory) %&gt;% 
+  tally() %&gt;% 
+  mutate(denom = sum(n),
+         perc = n/denom) %&gt;% 
+  filter(SubmissionCategory %in% c(&quot;foot&quot;, &quot;leg&quot;)) %&gt;% 
+  ggplot(aes(x = Year, y = perc, color = SubmissionCategory, group = SubmissionCategory)) +
+  geom_line(alpha = .5, linetype = 2) +
+  geom_smooth(se = F)+
+  geom_point() +
+  labs(title = &quot;Trends in Foot and Leg Locks Over Time; Gi vs No-Gi&quot;,
+       y = &quot;Percent of All Submissions \n (Denom: Total N Submissions Per Year)&quot;,
+       color = &quot;Submission Type&quot;,
+       subtitle = paste0(&quot;Source: US Grappling Submission Only Events - Adults &quot;, 
+                         min(bjj_unique$Year), &quot;-&quot;, max(bjj_unique$Year)),
+       caption = &quot;Leg locks include submissions labeled knee bars, leg locks, or calf slicers\n@phillynerd | phillynerd.netlify.com&quot;) +
+  scale_colour_manual(values = c(&quot;#ffb200&quot;, &quot;#f4d78d&quot;)) +
+  scale_y_continuous(label = percent) +
+  theme_dark() +
+  facet_wrap(~Gi_Nogi) </code></pre>
+<p><img src="/post/2019-04-30-lock-all-the-legs_files/figure-html/gi%20v%20nogi-1.png" width="672" /></p>
+<p>And again, the data show what I would expect - there are fewer leg locks in gi vs no-gi, since they are reserved for advanced belts; and foot locks are less common in gi vs no gi (although they are increasing in popularity across the board). Again, not surprising since we have more variety of foot-locks in no-gi compared to gi. Just to illustrate that further, I faceted the first figure we started off with by gi and no-gi:</p>
+<pre class="r"><code>bjj_unique %&gt;% 
+  filter(SubmissionCategory %in% c(&quot;foot&quot;, &quot;leg&quot;),
+         Gi_Nogi %in% c(&quot;gi&quot;, &quot;no gi&quot;)) %&gt;% 
+  group_by(Gi_Nogi, CleanedSubmission) %&gt;% 
+  tally() %&gt;% 
+  mutate(denom = sum(n),
+         perc = n/denom) %&gt;%
+  arrange(-perc) %&gt;% 
+  ggplot(aes(x = reorder(CleanedSubmission, -perc), y = perc)) +
+  geom_bar(stat = &quot;identity&quot;, fill = &quot;#efbc39&quot;) +
+  labs(title = &quot;Frequency of Specific Leg and Foot Locks&quot;,
+       x = &quot;Submissions&quot;,
+       y = &quot;Percent of all foot &amp; leg locks&quot;,
+       subtitle = paste0(&quot;Source: US Grappling Submission Only Events - Adults, &quot;, min(bjj_unique$Year), &quot;-&quot;, max(bjj_unique$Year)),
+       caption = &quot;@phillynerd | phillynerd.netlify.com&quot;) +
+  scale_y_continuous(label = percent) +
+  theme_dark() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~Gi_Nogi)</code></pre>
+<p><img src="/post/2019-04-30-lock-all-the-legs_files/figure-html/freq%20of%20types%20by%20gi/nogi-1.png" width="672" /></p>
+<p>While straight ankle locks are still the most popular, they have a much bigger lead in the gi rankings compared to no-gi, where heel hooks are a close second, and knee bars are not far behind.</p>
+<p>And just as an aside on the data itself, ankle locks may or may not be straight ankle locks - there’s no real naming convention in the data, and there’s lots of variation on how different gyms refer to the same move. I kept things as separate as possible unless I knew for a fact they were referring to the same thing (there were some helpful documentation notes on some of these, but mostly it came down to googling weird submissions I’d never heard of). And while I feel like ankle locks usually refer to straight ankle locks, I did find a few other ankle locks when I googled it (like tripod ankle lock). So I just kept them separate. And if you’re interested in more detail on how I cleaned this data, I’ll have the script on GitHub, and that may be another post down the line.</p>
+</div>
+<div id="gender" class="section level2">
+<h2>Gender</h2>
+<p>The last thing I wanted to look at was the gender difference in leg locks. This ended up being one of the more surprising figures I produced:</p>
+<pre class="r"><code>#trends by gender
+bjj_unique %&gt;% 
+  filter(!(SubmissionCategory %in% nonsubs) &amp; Division %in% c(&quot;women&quot;, &quot;men&quot;, &quot;30+ men&quot;)) %&gt;% 
+  mutate(Division = ifelse(Division == &quot;women&quot;, &quot;women&quot;, &quot;men&quot;)) %&gt;% 
+  group_by(Year, Division, SubmissionCategory) %&gt;% 
+  tally() %&gt;% 
+  mutate(denom = sum(n),
+         perc = n/denom) %&gt;% 
+  filter(SubmissionCategory %in% c(&quot;foot&quot;, &quot;leg&quot;)) %&gt;% 
+  ggplot(aes(x = Year, y = perc, color = SubmissionCategory, group = SubmissionCategory)) +
+  geom_line(linetype = 2) +
+  geom_point() +
+ # geom_smooth(se = F)+
+  labs(title = &quot;Number of Foot and Leg Locks Over Time by Gender&quot;,
+       y = &quot;Percent of All Submissions \n (Denom: Total N Submissions Per Year)&quot;,
+       color = &quot;Submission Type&quot;,
+       subtitle = paste0(&quot;Source: US Grappling Submission Only Events - Adults &quot;, 
+                         min(bjj_unique$Year), &quot;-&quot;, max(bjj_unique$Year)),
+       caption = &quot;Leg locks include submissions labeled knee bars, leg locks, or calf slicers\n @phillynerd | phillynerd.netlify.com&quot;) +
+  scale_colour_manual(values = c(&quot;#ffb200&quot;, &quot;#f4d78d&quot;)) +
+  scale_y_continuous(label = percent) +
+  theme_dark() +
+  facet_wrap(~Division) </code></pre>
+<p><img src="/post/2019-04-30-lock-all-the-legs_files/figure-html/gender-1.png" width="672" /></p>
+<p>I initially generated this with the same geom_smooth function I added to all the other figures, but you’ll note there are very few data points on the women’s side, so ggplot couldn’t compute the loess curve. Which got me wondering, why are there entire years that go by where women don’t do foot locks? As a woman who loves a good heel hook, I decided to dig into this a bit more.</p>
+<p>My first thought is maybe there are just no women competing in those years. And it looks like 2011 is the only year where men compete but there are no female competitors (there’s no data for anyone in 2012). There are also only 7 female competitors in 2010, but in most other years there are over 50 female competitors, so I would expect some more foot and leg locks in the data if women were using them in comparable proportions to men.</p>
+<pre class="r"><code>bjj_unique %&gt;% 
+  filter(!(SubmissionCategory %in% nonsubs) &amp; Division %in% c(&quot;women&quot;, &quot;men&quot;, &quot;30+ men&quot;)) %&gt;% 
+  mutate(Division = ifelse(Division == &quot;women&quot;, &quot;women&quot;, &quot;men&quot;)) %&gt;% 
+  group_by(Year, Division) %&gt;% 
+  tally() %&gt;% 
+  ggplot(aes(x = Year, y = n, color = Division)) +
+  geom_point() +
+  geom_line() +
+  labs(title = &quot;Number of Competitors by Year&quot;,
+          subtitle = paste0(&quot;Source: US Grappling Submission Only Events - Adults &quot;, 
+                         min(bjj_unique$Year), &quot;-&quot;, max(bjj_unique$Year)),
+       caption = &quot;@phillynerd | phillynerd.netlify.com&quot;) +
+  geom_label(aes(label = n, fill = Division), size = 3, color = &#39;black&#39;, alpha = .4, label.size = 0) +
+  scale_y_continuous(limits = c(0, 1200)) +
+  theme_dark()</code></pre>
+<p><img src="/post/2019-04-30-lock-all-the-legs_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+Let’s try to slice it another way. What if we look at the breakdown of all submission categories for each year, by gender? It looks like women do choose leg locks a bit less often than their male counterparts, and it looks like they’re choosing arm locks instead. (Also, data struggle side note - this is the only way I could think of to highlight footlocks - by creating the FL flag and then using fill to draw a line around them. But the line isn’t as thick as I’d like it to be. What else could I have done? Is there a way to make the fill line thicker?)</p>
+<pre class="r"><code>bjj_unique %&gt;% 
+  filter(!(SubmissionCategory %in% nonsubs) &amp; Division %in% c(&quot;women&quot;, &quot;men&quot;, &quot;30+ men&quot;)) %&gt;% 
+  mutate(Division = ifelse(Division == &quot;women&quot;, &quot;women&quot;, &quot;men&quot;)) %&gt;% 
+  group_by(Year, Division, SubmissionCategory) %&gt;% 
+  tally() %&gt;% 
+  mutate(FL = ifelse(SubmissionCategory %in% c(&quot;foot&quot;,&quot;leg&quot;), &quot;Yes&quot;, &quot;No&quot;)) %&gt;% 
+  ggplot(aes(x = Year, y = n, fill = SubmissionCategory, color = FL)) +
+  geom_bar(stat = &quot;identity&quot;, position = position_fill()) +
+  labs(title = &quot;If Women Aren&#39;t Doing Footlocks, What Are They Doing?&quot;,
+      subtitle = paste0(&quot;Source: US Grappling Submission Only Events - Adults &quot;, 
+                         min(bjj_unique$Year), &quot;-&quot;, max(bjj_unique$Year)),
+       y = &quot;Percent of All Submissions&quot;,
+       fill = &quot;Submission Category&quot;,
+      caption = &quot;@phillynerd | phillynerd.netlify.com&quot;) +
+  facet_wrap(~Division) +
+  scale_fill_viridis_d(option = &quot;D&quot;) +
+  scale_color_manual(values = c(0, &quot;#f442e5&quot;)) +
+  scale_y_continuous(label = percent) +
+  guides(color = F) +
+  theme_dark()</code></pre>
+<p><img src="/post/2019-04-30-lock-all-the-legs_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+In the next figure, I cleaned this up a bit to collapse some of the categories and see if women really do prefer attacking arms over other options.</p>
+<pre class="r"><code>bjj_unique %&gt;% 
+  filter(!(SubmissionCategory %in% nonsubs) &amp; Division %in% c(&quot;women&quot;, &quot;men&quot;, &quot;30+ men&quot;)) %&gt;% 
+  mutate(Division = ifelse(Division == &quot;women&quot;, &quot;women&quot;, &quot;men&quot;),
+         BroadSubcat = case_when(SubmissionCategory %in% c(&quot;armbar&quot;, &quot;shoulder&quot;, &quot;wrist&quot;) ~ &quot;Arm&quot;,
+                                 SubmissionCategory %in% c(&quot;foot&quot;, &quot;leg&quot;) ~ &quot;Leg&quot;,
+                                 SubmissionCategory %in% c(&quot;choke&quot;, &quot;triangle&quot;) ~ &quot;Neck&quot;, #grouping triangles here since triangles that specified armbars were classified under armbar
+                                 TRUE ~ &quot;Other&quot;)) %&gt;% 
+  group_by(Year, BroadSubcat, Division) %&gt;% 
+  tally() %&gt;% 
+  mutate(FL = ifelse(BroadSubcat == &quot;Leg&quot;, &quot;Yes&quot;, &quot;No&quot;)) %&gt;% 
+  ggplot(aes(x = Year, y = n, fill = BroadSubcat, group = BroadSubcat)) +
+  geom_bar(stat = &quot;identity&quot;, position = position_fill()) +
+  geom_label(aes( label = n), position = position_fill(vjust = .5), size = 2.5, fill = &quot;white&quot;, alpha = .4, label.size = 0, label.padding = unit(.15, &quot;lines&quot;)) +
+  labs(title = &quot;Do men and women attack different limbs? Yearly Data&quot;,
+       subtitle = paste0(&quot;Source: US Grappling Submission Only Events - Adults &quot;, 
+                  min(bjj_unique$Year), &quot;-&quot;, max(bjj_unique$Year)),
+       y = &quot;Percent of All Submissions&quot;,
+       fill = &quot;Limb of Choice&quot;,
+       caption = &quot;@phillynerd | phillynerd.netlify.com&quot;) +
+  facet_wrap(~Division) +
+  scale_fill_viridis_d(option = &quot;D&quot;) +
+  scale_y_continuous(label = percent) +
+  #scale_color_manual(values = c(0, &quot;#f442e5&quot;)) +
+  guides(color = F) +
+  theme_dark()</code></pre>
+<p><img src="/post/2019-04-30-lock-all-the-legs_files/figure-html/What%20Limbs%20People%20Prefer%20to%20Attack-1.png" width="672" />
+It does look like women have a slight preference for arms, especially in more recent years (although chokes are always in the running). In contrast, men seem to have a preference for chokes, although arm attacks are never far off. And of course, bringing it back to our leg-lock theme for this post, while leg attacks are a distant third in terms of preference for both genders, they do seem to be a bigger part of mens’ submissions compared to womens’.</p>
+<p>Let’s do one last roll-up to see what this looks like overall.</p>
+<pre class="r"><code>bjj_unique %&gt;% 
+  filter(!(SubmissionCategory %in% nonsubs) &amp; Division %in% c(&quot;women&quot;, &quot;men&quot;, &quot;30+ men&quot;)) %&gt;% 
+  mutate(Division = ifelse(Division == &quot;women&quot;, &quot;women&quot;, &quot;men&quot;),
+         BroadSubcat = case_when(SubmissionCategory %in% c(&quot;armbar&quot;, &quot;shoulder&quot;, &quot;wrist&quot;) ~ &quot;Arm&quot;,
+                                 SubmissionCategory %in% c(&quot;foot&quot;, &quot;leg&quot;) ~ &quot;Leg&quot;,
+                                 SubmissionCategory %in% c(&quot;choke&quot;, &quot;triangle&quot;) ~ &quot;Neck&quot;, #grouping triangles here since triangles that specified armbars were classified under armbar
+                                 TRUE ~ &quot;Other&quot;)) %&gt;% 
+  group_by(BroadSubcat, Division) %&gt;% 
+  tally() %&gt;% 
+  mutate(FL = ifelse(BroadSubcat == &quot;Leg&quot;, &quot;Yes&quot;, &quot;No&quot;)) %&gt;% 
+  ggplot(aes(x = Division, y = n, fill = BroadSubcat, group = BroadSubcat)) +
+  geom_bar(stat = &quot;identity&quot;, position = position_fill()) +
+  geom_label(aes( label = n), position = position_fill(vjust = .5), size = 2.5, fill = &quot;white&quot;, alpha = .4, label.size = 0, label.padding = unit(.15, &quot;lines&quot;)) +
+  labs(title = &quot;Do men and women attack different limbs?&quot;,
+       subtitle = paste0(&quot;Source: US Grappling Submission Only Events - Adults &quot;, 
+                  min(bjj_unique$Year), &quot;-&quot;, max(bjj_unique$Year)),
+       y = &quot;Percent of All Submissions&quot;,
+       fill = &quot;Limb of Choice&quot;,
+       caption = &quot;@phillynerd | phillynerd.netlify.com&quot;) +
+  scale_fill_viridis_d(option = &quot;D&quot;) +
+  scale_y_continuous(label = percent) +
+  #scale_color_manual(values = c(0, &quot;#f442e5&quot;)) +
+  guides(color = F) +
+  theme_dark()</code></pre>
+<p><img src="/post/2019-04-30-lock-all-the-legs_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Alright, well I feel like this is long enough at this point. There’s still lots more to talk about with this data - I haven’t gotten into my submission of choice (chokes), nor have I even touched the time to submission, which brings in a really interesting element. Plus, as I mentioned before, there’s a whole host of stuff to talk about in terms of data cleaning (but I figured diving in would be more fun. Plus, again, still scared of Phil…)</p>
+<p>Now what about that fun martial arts story I promised you? I figured that will be a fun way to wrap up and reward you for sticking it out this long.</p>
+<p>In case you haven’t noticed, I’m not what one would call “girly”, in that I don’t fit most societal notions of what women should do or how they should dress or what they should be interested in.</p>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/r/">r</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/data-exploration/">data exploration</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/data-visualization/">data visualization</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/ggplot/">ggplot</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/hello-world/" data-tooltip="Finally! A Blog!">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/04/lock-all-the-legs/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Jessica Streeter. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/hello-world/" data-tooltip="Finally! A Blog!">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/04/lock-all-the-legs/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2019%2F04%2Flock-all-the-legs%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/jess.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Jessica Streeter</h4>
+    
+      <div id="about-card-bio">I&rsquo;m Jess, a trained medical sociologist who left academia and stumbled into a career as a data scientist. I&rsquo;m a self professed nerd of many things, including R, data visualization, craft beer, Game of Thrones, and Jiu Jitsu. I&rsquo;m happily enjoying my life in Philly with my wife, our son, and all our amazing puppies. All of my opinions are my own.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Data Scientist
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Philly
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/04/lock-all-the-legs/">
+                <h3 class="media-heading">Lock all the legs!</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Welcome, friends, to my first data post! So here’s the background: I love brazilian jiu jitsu (bjj). I did martial arts when I was a kid (bonus story at the end about my favorite martial art moment ever), but stopped going after I had a knee injury that sidelined me for several months. I’d always toyed with the idea of going back, but my wife made me realize how much I actually missed sports when I saw her being crazy active with her HIIT gym.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/04/hello-world/">
+                <h3 class="media-heading">Finally! A Blog!</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Well this took me way too long to get up and running! But here we are :) Hello, and welcome! Why another R blog?I’m starting this blog for a few reasons. First, I want to use it as a way to document my own R journey. I figured I’d document it for lots of reasons: a way to showcase my own work, career development, networking, everyone in the R community says you should do it, blah blah blah.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         2 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('https://res.cloudinary.com/phillynerd/image/upload/v1556209926/IMG_20180523_144459_bcsld6.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2019\/04\/lock-all-the-legs\/';
+          
+            this.page.identifier = '\/2019\/04\/lock-all-the-legs\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'https-phillynerd-netlify-com';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+
