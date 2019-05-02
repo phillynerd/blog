@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BJJ on A Girl Has No R Blog</title>
+    <link>/tags/bjj/</link>
+    <description>Recent content in BJJ on A Girl Has No R Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 30 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/bjj/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Lock all the legs!</title>
+      <link>/2019/04/lock-all-the-legs/</link>
+      <pubDate>Tue, 30 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/04/lock-all-the-legs/</guid>
+      <description>Welcome, friends, to my first data post! So here’s the background: I love brazilian jiu jitsu (bjj). I did martial arts when I was a kid (bonus story at the end about my favorite martial art moment ever), but stopped going after I had a knee injury that sidelined me for several months. I’d always toyed with the idea of going back, but my wife made me realize how much I actually missed sports when I saw her being crazy active with her HIIT gym.</description>
+    </item>
+    
+  </channel>
+</rss>

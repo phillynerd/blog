@@ -10,6 +10,7 @@ tags:
   - data exploration
   - data visualization
   - ggplot
+  - BJJ
 keywords:
   - tech
   
@@ -26,7 +27,7 @@ library(scales)
 library(kableExtra)
 
 #reading in data
-bjj_unique <- read_csv("C:/Users/jstre/Documents/bjj/bjj_unique.csv")
+bjj_unique <- read_csv("C:/Users/jstre/Documents/GitHub/BJJ/bjj_unique.csv")
 
 ```
 
@@ -332,5 +333,5 @@ Alright, well I feel like this is long enough at this point. There's still lots 
 
 Now what about that fun martial arts story I promised you? I figured that will be a fun way to wrap up and reward you for sticking it out this long. 
 
-In case you haven't noticed, I'm not what one would call "girly", in that I don't fit most societal notions of what women should do or how they should dress or what they should be interested in.  
+In case you haven't noticed, I'm not what one would call "girly", in that I don't fit most societal notions of what women should do or how they should dress or what they should be interested in.  But some guys still feel like they need to challenge women when they enter a space perceived as male.  So of course when I started doing karate in middle school, all the guys were either really hesitant to spar with me (can't hit a girl!) or overly eager to spar with me (how dare you come in here with your boobs!).  I was with one of my better training partners - a really nice, skilled, thoughtful guy who was comparably skilled to me - but one of the onlookers was a meathead who always tried to charge at girls full force.  So I tapped gloves with my sparring partner and about thirty seconds in, I landed a wicked kick in his hip area, and his groin cup fell out his pant leg.  How I managed to not laugh is beyond me, but Creepy McCreeperson slunk off and didn't bother trying to spar with me for the next month or two. Oh, and when we did finally spar, it was in competition and I kicked his ass and advanced on to first place. And to this day, it remains one of my proudest sports moments.  
 
