@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>General on A Girl Has No R Blog</title>
-    <link>/categories/general/</link>
-    <description>Recent content in General on A Girl Has No R Blog</description>
+    <title>conferences on A Girl Has No R Blog</title>
+    <link>/tags/conferences/</link>
+    <description>Recent content in conferences on A Girl Has No R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 12 May 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/general/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/conferences/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,15 +18,6 @@
       
       <guid>/2019/05/an-introvert-s-guide-to-conferences/</guid>
       <description>It’s a rainy Sunday here in NYC, and I have some time to reflect on the Lander Analytics RStatsNY conference I attended for the last few days. It was a whirlwind - tons of learning, laughs, shock and awe (redoc I’m looking at you), and of course a steady sprinkle of imposter syndrome and anxiety. I had an absolute blast, the survival analysis workshop was phenomenal and I’m already planning to trick my boss into sending me next year.</description>
-    </item>
-    
-    <item>
-      <title>Finally! A Blog!</title>
-      <link>/2019/04/hello-world/</link>
-      <pubDate>Fri, 26 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/2019/04/hello-world/</guid>
-      <description>Well this took me way too long to get up and running! But here we are :) Hello, and welcome! Why another R blog?I’m starting this blog for a few reasons. First, I want to use it as a way to document my own R journey. I figured I’d document it for lots of reasons: a way to showcase my own work, career development, networking, everyone in the R community says you should do it, blah blah blah.</description>
     </item>
     
   </channel>

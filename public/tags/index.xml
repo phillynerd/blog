@@ -6,10 +6,28 @@
     <description>Recent content in Tags on A Girl Has No R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 30 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 12 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>conferences</title>
+      <link>/tags/conferences/</link>
+      <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/conferences/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nyr</title>
+      <link>/tags/nyr/</link>
+      <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/nyr/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>BJJ</title>

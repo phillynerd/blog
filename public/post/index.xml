@@ -6,10 +6,19 @@
     <description>Recent content in Posts on A Girl Has No R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 30 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 12 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>An Introvert&#39;s Guide to Conferences</title>
+      <link>/2019/05/an-introvert-s-guide-to-conferences/</link>
+      <pubDate>Sun, 12 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/05/an-introvert-s-guide-to-conferences/</guid>
+      <description>It’s a rainy Sunday here in NYC, and I have some time to reflect on the Lander Analytics RStatsNY conference I attended for the last few days. It was a whirlwind - tons of learning, laughs, shock and awe (redoc I’m looking at you), and of course a steady sprinkle of imposter syndrome and anxiety. I had an absolute blast, the survival analysis workshop was phenomenal and I’m already planning to trick my boss into sending me next year.</description>
+    </item>
     
     <item>
       <title>Lock all the legs!</title>

@@ -4,7 +4,48 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2019-04-30T00:00:00+00:00</lastmod>
+    <lastmod>2019-05-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/2019/05/an-introvert-s-guide-to-conferences/</loc>
+    <lastmod>2019-05-12T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2019-05-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/general/</loc>
+    <lastmod>2019-05-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2019-05-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2019-05-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/conferences/</loc>
+    <lastmod>2019-05-12T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/nyr/</loc>
+    <lastmod>2019-05-12T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -21,26 +62,8 @@
   </url>
   
   <url>
-    <loc>/categories/</loc>
-    <lastmod>2019-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/2019/04/lock-all-the-legs/</loc>
     <lastmod>2019-04-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2019-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2019-04-30T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -70,12 +93,6 @@
   <url>
     <loc>/2019/04/hello-world/</loc>
     <lastmod>2019-04-26T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/general/</loc>
-    <lastmod>2019-04-26T00:00:00+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
