@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>r on A Girl Has No R Blog</title>
-    <link>/tags/r/</link>
-    <description>Recent content in r on A Girl Has No R Blog</description>
+    <title>TidyTuesday on A Girl Has No R Blog</title>
+    <link>/categories/tidytuesday/</link>
+    <description>Recent content in TidyTuesday on A Girl Has No R Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 20 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/r/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/tidytuesday/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -23,15 +23,6 @@
 &lt;hr /&gt;
 &lt;p&gt;The summer, as always, is a super-busy time for us. Not only is work crazy with state reporting and fiscal year reporting, but my wife and I are always running around trying to suck the most out of every nice day before we hibernate. Add a toddler to that equation, and you end up with exactly zero free time. Which, of course, means it’s been a while since my last post.&lt;br /&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>Lock all the legs!</title>
-      <link>/2019/04/lock-all-the-legs/</link>
-      <pubDate>Tue, 30 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>/2019/04/lock-all-the-legs/</guid>
-      <description>Welcome, friends, to my first data post! So here’s the background: I love brazilian jiu jitsu (bjj). I did martial arts when I was a kid (bonus story at the end about my favorite martial art moment ever), but stopped going after I had a knee injury that sidelined me for several months. I’d always toyed with the idea of going back, but my wife made me realize how much I actually missed sports when I saw her being crazy active with her HIIT gym.</description>
     </item>
     
   </channel>

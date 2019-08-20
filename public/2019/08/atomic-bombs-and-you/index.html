@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.55.4 with theme Tranquilpeak 0.4.3-SNAPSHOT">
+<meta name="author" content="Jessica Streeter">
+<meta name="keywords" content="tech">
+<meta name="description" content="
+
+
+
+The summer, as always, is a super-busy time for us. Not only is work crazy with state reporting and fiscal year reporting, but my wife and I are always running around trying to suck the most out of every nice day before we hibernate. Add a toddler to that equation, and you end up with exactly zero free time. Which, of course, means it’s been a while since my last post.
+">
+
+
+<meta property="og:description" content="
+
+
+
+The summer, as always, is a super-busy time for us. Not only is work crazy with state reporting and fiscal year reporting, but my wife and I are always running around trying to suck the most out of every nice day before we hibernate. Add a toddler to that equation, and you end up with exactly zero free time. Which, of course, means it’s been a while since my last post.
+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Atomic Bombs and You">
+<meta name="twitter:title" content="Atomic Bombs and You">
+<meta property="og:url" content="/2019/08/atomic-bombs-and-you/">
+<meta property="twitter:url" content="/2019/08/atomic-bombs-and-you/">
+<meta property="og:site_name" content="A Girl Has No R Blog">
+<meta property="og:description" content="
+
+
+
+The summer, as always, is a super-busy time for us. Not only is work crazy with state reporting and fiscal year reporting, but my wife and I are always running around trying to suck the most out of every nice day before we hibernate. Add a toddler to that equation, and you end up with exactly zero free time. Which, of course, means it’s been a while since my last post.
+">
+<meta name="twitter:description" content="
+
+
+
+The summer, as always, is a super-busy time for us. Not only is work crazy with state reporting and fiscal year reporting, but my wife and I are always running around trying to suck the most out of every nice day before we hibernate. Add a toddler to that equation, and you end up with exactly zero free time. Which, of course, means it’s been a while since my last post.
+">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-08-20T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2019-08-20T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="TidyTuesday">
+    
+  
+  
+    
+      <meta property="article:tag" content="data visualization">
+    
+      <meta property="article:tag" content="ggplot">
+    
+      <meta property="article:tag" content="r">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@phillynerd">
+
+
+  <meta name="twitter:creator" content="@phillynerd">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://res.cloudinary.com/phillynerd/image/upload/v1566327010/6476282811_7977dbbaa6_o_gvk3vk.jpg">
+  <meta property="twitter:image" content="https://res.cloudinary.com/phillynerd/image/upload/v1566327010/6476282811_7977dbbaa6_o_gvk3vk.jpg">
+
+
+
+
+  <meta property="og:image" content="/img/jess.png">
+  <meta property="twitter:image" content="/img/jess.png">
+
+
+    <title>Atomic Bombs and You</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2019/08/atomic-bombs-and-you/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-nnm2spxvve8onlujjlegkkytaehyadd4ksxc1hyzzq9a2wvtrgbljqyulomn.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">A Girl Has No R Blog</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/jess.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/jess.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Jessica Streeter</h4>
+        
+          <h5 class="sidebar-profile-bio">I&rsquo;m Jess, a trained medical sociologist who left academia and stumbled into a career as a data scientist. I&rsquo;m a self professed nerd of many things, including R, data visualization, craft beer, Game of Thrones, and Jiu Jitsu. I&rsquo;m happily enjoying my life in Philly with my wife, our son, and all our amazing puppies. All of my opinions are my own.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/phillynerd">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/phillynerd">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      
+      
+      <span class="sidebar-button-desc"></span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-left
+              post-header-cover--full"
+       style="background-image:url('https://res.cloudinary.com/phillynerd/image/upload/v1566327010/6476282811_7977dbbaa6_o_gvk3vk.jpg')"
+       data-behavior="4">
+    
+      <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Atomic Bombs and You
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2019-08-20T00:00:00Z">
+        
+  August 20, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/tidytuesday">TidyTuesday</a>
+    
+  
+
+  </div>
+
+</div>
+    
+  </div>
+
+
+      <div id="main" data-behavior="4"
+        class="hasCover
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              </p>
+<p>Today, I just wanted to take some time to walk through this week’s TidyTuesday submission, since I’m pretty proud of this visualization, and I thought it would be cool to share not only the code, but my thought process behind the viz.</p>
+<p>For those of you who aren’t familiar, TidyTuesday is a weekly online learning challenge on Twitter. <span class="citation">@R4DSCommunity</span> and <span class="citation">@thomas_mock</span> release a cool new dataset each week, along with some documentation, and you’re free to do whatever you want with it. The data are usually pretty clean, so you can jump right in pretty quickly. You can view all the TidyTuesday datasets to date <a href="https://github.com/rfordatascience/tidytuesday">here</a>. And if you want to see prior submissions, you can check out this cool shiny app for it <a href="https://nsgrantham.shinyapps.io/tidytuesdayrocks/">here</a> (designed by Neal Grantham).</p>
+<p>This week’s data are from Stockholm International Peace Research Institute (SIPRI), and provide information on nuclear tests around the workd between 1945 and 1998.</p>
+<div id="getting-started" class="section level1">
+<h1>Getting Started</h1>
+<div id="packages-skimr-visdat" class="section level2">
+<h2>packages: skimr &amp; visdat</h2>
+<p>The first thing I like to do after I load in the data are some quick visualizations with skimr::skim and visdat::vis_data/visdat::vis_miss</p>
+<pre class="r"><code>library(tidyverse)
+library(skimr)
+library(visdat)
+library(lubridate)
+
+#reading in data
+NE_Raw &lt;- read_csv(&quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-08-20/nuclear_explosions.csv&quot;)
+
+skimr::skim(NE_Raw)</code></pre>
+<pre><code>## Skim summary statistics
+##  n obs: 2051 
+##  n variables: 16 
+## 
+## -- Variable type:character ------------------------
+##  variable missing complete    n min max empty n_unique
+##   country       0     2051 2051   2   6     0        7
+##      name     665     1386 2051   1  15     0     1308
+##   purpose       1     2050 2051   2   7     0       27
+##    region       0     2051 2051   3  12     0       79
+##    source       0     2051 2051   3   3     0       13
+##      type       0     2051 2051   2   8     0       20
+## 
+## -- Variable type:numeric --------------------------
+##           variable missing complete    n     mean       sd          p0
+##          date_long       0     2051 2051 2e+07    1e+05        1.9e+07
+##              depth       0     2051 2051    -0.49    10.97  -400      
+##              id_no       0     2051 2051 70933.8  10359.74 45001      
+##           latitude       0     2051 2051    35.4     23.4    -49.5    
+##          longitude       0     2051 2051   -36.05   100.86  -169.32   
+##     magnitude_body       0     2051 2051     2.14     2.62     0      
+##  magnitude_surface       0     2051 2051     0.36     1.2      0      
+##               year       0     2051 2051  1970.9     10.37  1945      
+##        yield_lower       3     2048 2051   209.22  1641.35     0      
+##        yield_upper       5     2046 2051   323.43  2055.2      0      
+##       p25       p50      p75     p100     hist
+##  2e+07    2e+07     2e+07    2e+07    &lt;U+2581&gt;&lt;U+2585&gt;&lt;U+2586&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2586&gt;&lt;U+2583&gt;&lt;U+2581&gt;
+##      0        0         0        1.45 &lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2587&gt;
+##  62139.5  70021     79044.5  98005    &lt;U+2581&gt;&lt;U+2585&gt;&lt;U+2586&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2586&gt;&lt;U+2583&gt;&lt;U+2581&gt;
+##     37       37.1      49.87    75.1  &lt;U+2581&gt;&lt;U+2582&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2587&gt;&lt;U+2585&gt;&lt;U+2582&gt;
+##   -116.05  -116        78      179.22 &lt;U+2582&gt;&lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2586&gt;&lt;U+2581&gt;&lt;U+2581&gt;
+##      0        0         5.1      7.4  &lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2582&gt;&lt;U+2581&gt;
+##      0        0         0        6    &lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;
+##   1962     1970      1979     1998    &lt;U+2581&gt;&lt;U+2585&gt;&lt;U+2586&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2586&gt;&lt;U+2583&gt;&lt;U+2581&gt;
+##      0        0.001    20    50000    &lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;
+##     18.25    20       150    50000    &lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;</code></pre>
+<pre class="r"><code>visdat::vis_dat(NE_Raw)</code></pre>
+<p><img src="/post/2019-08-20-atomic-bombs-and-you_files/figure-html/initial%20work-1.png" width="672" /></p>
+<pre class="r"><code>visdat::vis_miss(NE_Raw)</code></pre>
+<p><img src="/post/2019-08-20-atomic-bombs-and-you_files/figure-html/initial%20work-2.png" width="672" /></p>
+<p>I think of skim() as summary() on steroids. It organizes your variables by type, and then gives you useful info like summary statistics, number of NA’s, number of levels/unique values, variable types, etc. It’s a great first step, and usually gives me a solid starting point. Plus, it even generates little histograms, which you can’t see on the blog, but trust me they’re cool.</p>
+<p>vis_dat() and vis_miss() both provide similar types of information, but in a quicker visual format. I like vis_dat() for quickly seeing what I need to recast to different variable types, and vis_miss() adds the percent of NA’s for each variable, which is always nice.</p>
+<p>After this first glimpse, I know a few things:</p>
+<ol style="list-style-type: decimal">
+<li>I want to change the variable types for date_long, country, region, source, and type.</li>
+<li>A number of these new factors have a lot of different values, so I want to check the documentation to see what will be most useful.</li>
+<li>Since I want to use the average of yield_lower and yield_upper, I want to remove cases where yield_lower or yield_upper are NA. If one of the two are available, I could technically impute the value and go from there, but there are only 5 cases total, so it’s not worth the effort for this exercise</li>
+</ol>
+<p>After I checked out the documentation (see the SIPRI pdf on the TidyTuesday github page), it seems like the region likely won’t be useful to me - there are lots of different values (79) and I don’t feel like sorting through those for a more condensed set of levels. I’ll still recode it anyway just in case I change my mind. Same with source - there aren’t many unique values (13), but I also don’t find the variable too interesting.</p>
+<p>Type seems like it really focuses on 2 master categories: atmospheric detonations and underground detonations. All subtypes, which include information like whether the test occurred from a barge, a balloon, or a mineshaft, map up to these two categories.</p>
+<pre class="r"><code>NE_Raw %&gt;% 
+  count(type) %&gt;% 
+  arrange(desc(n)) </code></pre>
+<pre><code>## # A tibble: 20 x 2
+##    type         n
+##    &lt;chr&gt;    &lt;int&gt;
+##  1 SHAFT     1015
+##  2 TUNNEL     310
+##  3 ATMOSPH    185
+##  4 SHAFT/GR    85
+##  5 AIRDROP     78
+##  6 TOWER       75
+##  7 BALLOON     62
+##  8 SURFACE     62
+##  9 SHAFT/LG    56
+## 10 BARGE       40
+## 11 UG          32
+## 12 GALLERY     13
+## 13 ROCKET      13
+## 14 CRATER       9
+## 15 UW           8
+## 16 SPACE        4
+## 17 MINE         1
+## 18 SHIP         1
+## 19 WATER SU     1
+## 20 WATERSUR     1</code></pre>
+<p>This finer grain detail doesn’t seem as interesting to me - it adds a lot of nuance that I likely won’t need, and it’s not available for every type of detonation. So I recoded all variables to either atmospheric or underground. I also noticed that there is a category for space detonations, which isn’t mentioned in the documentation but it seems pretty cool, so I made it it’s own subgroup even though there are only a few cases for it (n=4).</p>
+<pre class="r"><code>#Categorization based on the SIPRI documentation
+atm &lt;- c(&quot;TOWER&quot;, &quot;AIRDROP&quot;, &quot;UW&quot;, &quot;SURFACE&quot;, &quot;CRATER&quot;, &quot;SHIP&quot;, 
+         &quot;ATMOSPH&quot;, &quot;BALLOON&quot;, &quot;ROCKET&quot;, &quot;WATERSUR&quot;, 
+         &quot;WATER SU&quot;, &quot;BARGE&quot;)
+
+ug &lt;- c(&quot;SHAFT&quot;, &quot;MINE&quot;, &quot;TUNNEL&quot;, &quot;GALLERY&quot;, &quot;UG&quot;, &quot;SHAFT/GR&quot;, &quot;SHAFT/LG&quot;)
+
+space &lt;- &quot;SPACE&quot;
+
+#cleaning my data
+NEclean &lt;- NE_Raw %&gt;% 
+   mutate(date_long = ymd(date_long),
+         country = factor(country),
+         region = factor(region),
+         source = factor(source),
+         type = factor(type)) %&gt;% 
+   mutate(typecat = case_when(type %in% atm ~ &quot;Atmospheric&quot;,
+                             type %in% ug ~ &quot;Underground&quot;,
+                             type %in% space ~ &quot;Space&quot;)) %&gt;%
+  filter(is.na(yield_lower) == F, is.na(yield_upper)==F) %&gt;% 
+  mutate(AverageYield = (yield_lower + yield_upper)/2)</code></pre>
+</div>
+</div>
+<div id="figuring-out-what-to-plot" class="section level1">
+<h1>Figuring out what to plot</h1>
+<p>Cool, we have clean data! Now let’s start playing with some visualization. The first thing I plotted was yield vs magnitude_body and magnitude_surface, just to confirm I wanted to use yield. Yield looks the most interesting, and the easiest to interpret, so I stuck with yield. Plus, I read some stuff in the documentation about how governments can fudge the magnitude numbers by detonating in specific ways.</p>
+<p>Next, I wanted to see yield by country:</p>
+<pre class="r"><code>NEclean %&gt;% 
+  ggplot(aes(x = country, y = AverageYield)) +
+  geom_jitter()</code></pre>
+<p><img src="/post/2019-08-20-atomic-bombs-and-you_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>This doesn’t seem super interesting, and it looks like a lot of the yield is really low, hovering around zero. I double check this against a density plot of yield, which confirms it.</p>
+<pre class="r"><code>NEclean %&gt;% 
+  ggplot(aes(x = AverageYield)) +
+  geom_density()</code></pre>
+<p><img src="/post/2019-08-20-atomic-bombs-and-you_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>I still want to use yield, but it may be better mapped to size or color.</p>
+<p>Then I try country vs year, which looks much more promising. In particular, I’m noticing that gap just before 1960, and then that really dense area right after 1960. I definitely want to see what’s going on with both of these.</p>
+<pre class="r"><code>NEclean %&gt;% 
+  ggplot(aes(x = year, y = country)) +
+  geom_jitter(alpha = .4)</code></pre>
+<p><img src="/post/2019-08-20-atomic-bombs-and-you_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>For the next iteration, I add color for type, and size for yield. I also opt to use coord_flip so i can set the jitter width (there is probably an easier way to do this, but it’s what I knew how to do off the top of my head).</p>
+<pre class="r"><code>NEclean %&gt;% 
+  ggplot(aes(x = country, y = year, size = AverageYield, color = typecat)) +
+  geom_jitter(alpha = .4, width = .2) +
+  coord_flip()</code></pre>
+<p><img src="/post/2019-08-20-atomic-bombs-and-you_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Not only are there lots of tests happening right after 1960, but there’s also a huge spike in the size of the tests in that same time period. Then there’s this really clear divide in the type of testing as well. I’m not sure how to explain all of this at this point, but I’m willing to bet it’s a policy thing. Off to wikipedia! The article on nuclear testing have a whole section on <a href="https://en.wikipedia.org/wiki/Nuclear_weapons_testing#Treaties_against_testing">treaties against testing</a>, and it looks like this explains a lot of what I’m seeing in the data. So let’s add it to our plot!</p>
+</div>
+<div id="making-our-plot-fancy" class="section level1">
+<h1>Making our plot fancy</h1>
+<p>First up, let’s add some lines and rectangles to denote important periods. In particular, I’m interested in the bilateral agreement to stop testing, the Partial Nuclear Testing Ban Treaty, the Outer Space Treaty, and the two-year period where peak testing occurred by megatonnage (1961-62, mentioned in the same Wikipedia article). I do this using annotate(geom = “rect”) and geom_hline() functions. I also made a few other small tweaks, including relabeling the countries on the axis, and setting up my color palette.</p>
+<pre class="r"><code>basefig &lt;- NEclean %&gt;% 
+  ggplot(aes(x = country, y = year, size = AverageYield, color = typecat)) +
+  #peak nuclear explosions by megatonage (wikipedia:https://en.wikipedia.org/wiki/Nuclear_weapons_testing#History)
+  annotate(geom = &quot;rect&quot;, 
+           xmin = -Inf, 
+           xmax = Inf, 
+           ymin = 1961, 
+           ymax = 1962, 
+           fill = &quot;#03525E&quot;, 
+           alpha = .8) +
+  #USSR-US bilateral testing moratorium on testing 
+  annotate(geom = &quot;rect&quot;, 
+           xmin = -Inf, 
+           xmax = Inf, 
+           ymin = 1958, 
+           ymax = 1961, 
+           fill = &quot;#09c2de&quot;, 
+           alpha = .6) +
+  #Partial nuclear test ban treaty in effect, oct 10, 1963
+  geom_hline(yintercept = 1963, color = &quot;#ffbb00&quot;, size = 1) + 
+  #outer space treaty
+  geom_hline(yintercept = 1967, color =  &quot;#00ff44&quot;, size = 1) + 
+  geom_jitter(alpha = .4, width = .2) +
+  #sequence axis by 5 yr increments
+  scale_y_continuous(breaks = seq(min(NEclean$year), 
+                                  max(NEclean$year),  
+                                  5)) +
+  #set my pallette
+  scale_color_manual(values = c(&quot;#9e0c02&quot;, &quot;#00ff44&quot;,&quot;#ffdd00&quot;)) +
+  #relabel countries on axis
+  scale_x_discrete(labels = c(&quot;PAKIST&quot; = &quot;Pakistan&quot;, 
+                              &quot;INDIA&quot; = &quot;India&quot;, 
+                              &quot;FRANCE&quot; = &quot;France&quot;, 
+                              &quot;CHINA&quot; = &quot;China&quot;)) + 
+  coord_flip()
+
+basefig</code></pre>
+<p><img src="/post/2019-08-20-atomic-bombs-and-you_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>When it came to selecting my color palette, since we’re talking about nuclear bombs, I immediately thought of old-school atomic-age sci-fi movies. The posters for these movies are fantastic, and often just use a few colors, with big fonts and awesome images of wonderfully-schlocky bad guys. In particular, I pulled some colors off of the poster below, using <a href="https://imagecolorpicker.com/">Image Color Picker</a>, which lets you pick hex colors from an image you link to or upload. And I threw in just a little neon green because nuclear explosions require at least a little neon green.</p>
+<center>
+<img src = https://res.cloudinary.com/phillynerd/image/upload/v1566325230/ForbiddenPlanet_uoigf6.gif>
+</center>
+<p>Next up, let’s explain what these extra lines and boxes are with some text annotations. This is what I was most excited to test out, since I get way too excited when other people add text and arrows to their plots. Here’s the general principal: Add annotate(geom = “text”) for your text, then use geom_curve() for your arrow. You sometimes have to flip the sign of your curvature to get the arrow to bend the right way, but other than that, there’s not much more to this.</p>
+<pre class="r"><code>basefig +
+  #note and arrow for moratorium
+  annotate(geom = &quot;text&quot;, x = 2, y = 1952, 
+           label = &quot;USSR &amp; US agree to\nbilateral testing moratorium&quot;,
+           size = 3.5, color = &quot;black&quot;, family = &quot;Gill Sans MT&quot;) +
+  geom_curve(aes(y = 1952, yend = 1959, x = 1.7, xend = 1.7), 
+             arrow = arrow(length = unit(0.07, &quot;inch&quot;)), size = 0.7,
+             color = &quot;black&quot;, curvature = 0.25) </code></pre>
+<p><img src="/post/2019-08-20-atomic-bombs-and-you_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>When it comes to figuring out where to place things on the plot, it’s a bit of trial and error. The text is usually easy enough to place - I just try to find an empty section of my plot, and then figure out the coordinates for it. For the arrow, I just bumped it down a few decimal points from where the text is. This ensures it’s below the text. Then I pumped it to the right of 1958 a bit so it fell in the light blue box. That’s it! Fancy text and arrow annotations in a few lines!</p>
+<p>I did this several more times for all my annotations, and even added a little arrow for Hiroshima and Nagasaki (I would have loved to highlight them a bit more but wasn’t sure how to approach it). Smack some labels on this sucker using the labs() function, and we’re almost done! I also made the text white here, bc I’m ultimately going to make the background dark.</p>
+<pre class="r"><code>annotatefig &lt;- basefig +
+  coord_flip() +
+  #note and arrow for moratorium
+  annotate(geom = &quot;text&quot;, x = 2, y = 1952, 
+           label = &quot;USSR &amp; US agree to\nbilateral testing moratorium&quot;,
+           size = 3.5, color = &quot;white&quot;, family = &quot;Gill Sans MT&quot;) +
+  geom_curve(aes(y = 1952, yend = 1959, x = 1.7, xend = 1.7), 
+             arrow = arrow(length = unit(0.07, &quot;inch&quot;)), size = 0.7,
+             color = &quot;white&quot;, curvature = 0.25) +
+  # note and arrow for peak testing period
+  annotate(geom = &quot;text&quot;, x = 4, y = 1957, 
+           label = &quot;Period represents peak \ntesting by megatonage&quot;,
+           size = 3.5, color = &quot;white&quot;, family = &quot;Gill Sans MT&quot;) +
+  geom_curve(aes(y = 1957, yend = 1961.5, x = 3.7, xend = 3.7), 
+             arrow = arrow(length = unit(0.07, &quot;inch&quot;)), size = 0.7,
+             color = &quot;white&quot;, curvature = 0.25) +
+  # note and arrow for underground testing only
+  annotate(geom = &quot;text&quot;, x = 5.5, y = 1972, 
+           label = &quot;Partial Nuclear Test Ban Treaty\nlimits all testing to underground&quot;,
+           size = 3.5, color = &quot;white&quot;, family = &quot;Gill Sans MT&quot;) +
+  geom_curve(aes(y = 1972, yend = 1963, x = 5.2, xend = 5.2), 
+             arrow = arrow(length = unit(0.07, &quot;inch&quot;)), size = 0.7,
+             color = &quot;white&quot;, curvature = -0.25) +
+  # note and arrow for outer space treaty ban
+  annotate(geom = &quot;text&quot;, x = 3, y = 1974, 
+           label = &quot;Outer Space Treaty bans all testing\non the moon and other celestial bodies&quot;,
+           size = 3.5, color = &quot;white&quot;, family = &quot;Gill Sans MT&quot;) +
+  geom_curve(aes(y = 1974, yend = 1967, x = 2.7, xend = 2.7), 
+             arrow = arrow(length = unit(0.07, &quot;inch&quot;)), size = 0.7,
+             color = &quot;white&quot;, curvature = -0.25) +
+  # Hiroshima and nagasaki
+  annotate(geom = &quot;text&quot;, x = 5, y = 1945, 
+           label = &quot;Hiroshima &amp;\nNagasaki&quot;,
+           size = 3.5, color = &quot;white&quot;, family = &quot;Gill Sans MT&quot;) +
+  geom_curve(aes(y = 1944.2, yend = 1944.6, x = 5.2, xend = 5.9), 
+             arrow = arrow(length = unit(0.07, &quot;inch&quot;)), size = 0.7,
+             color = &quot;white&quot;, curvature = -0.25) +
+  #plot labels
+  labs(title = &quot;The Atomic Bomb and You&quot;,
+        subtitle = sprintf( &quot;A Timeline of Nuclear Testing and Select Treaties: %s - %s&quot;, 
+                       min(NEclean$year), 
+                       max(NEclean$year)),
+       caption = &quot;Data: SIPRI | Treaty Information: Wikipedia | Visualization: @phillynerd&quot;,
+       size = &quot;Average Yield\n(Kilotons of TNT)&quot;,
+       color = &quot;Testing Location&quot;) 
+
+annotatefig + theme_dark()</code></pre>
+<p><img src="/post/2019-08-20-atomic-bombs-and-you_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="customizing-the-theme" class="section level1">
+<h1>Customizing the Theme</h1>
+<div id="package-extrafont" class="section level2">
+<h2>package: extrafont</h2>
+<p>Now let’s finish off with a custom theme. It’s my first time messing with this many elements of a theme, and I can definitely see why people set up packages to store specific themes. I tweaked most things here, to keep with our 1950’s sci-fi feel. In particular, I played around with the fonts using the extrafont package. Extrafont combs your system for all .ttf fonts, and then imports them into R. This allows for a lot more variety than the few fonts available in R. I used the <a href="https://www.1001fonts.com/epyval-font.html">Epyval font</a>, in case you want to fully replicate my figure.</p>
+<pre class="r"><code>install.packages(&quot;extrafont&quot;)
+
+library(extrafont)
+
+#imports all the fonts from your system, takes a few minutes
+extrafont::font_import()
+
+#loads the fonts into R
+loadfonts(device = &quot;win&quot;)
+
+#confirms what fonts are available in R
+windowsFonts() #base function that ensures the above command worked
+fonts() #extrafont function that lists all your fonts</code></pre>
+<p>And here’s the code for the finishing touches. In addition to messing with the fonts and colors, I found the last 2 lines of code to be the most useful. The guides() command allowed me to change the size of the color legend widget, as well as their opacity, and it allowed me to set the size legend widget to a white fill. Both of these make the legend much more readable. The other nice trick I learned was legend.key = element_rect(fill = NA, color = NA), which removes the tiny boxes behind the legend widget. All of these are really useful when dealing with dark backgrounds</p>
+<pre class="r"><code>finalfig &lt;- annotatefig +
+  theme(panel.grid = element_blank(),
+        panel.background = element_rect(fill = &quot;gray20&quot;),
+        panel.border = element_rect(color = &quot;white&quot;, fill = NA),
+        plot.background  = element_rect(fill = &quot;gray20&quot;),
+        legend.background = element_rect(fill = &quot;gray20&quot;),
+        legend.text = element_text(color = &quot;white&quot;, size = 10, family = &quot;Epyval&quot;),
+        legend.title = element_text(color = &quot;#ffbf00&quot;, size = 14),
+        legend.position = &quot;bottom&quot;,
+        legend.key = element_rect(fill = NA, color = NA), #removes little boxes behind legend widget
+        axis.text = element_text(color = &quot;white&quot;, family = &quot;Epyval&quot;, size = 12),
+        title = element_text(color = &quot;white&quot;, family = &quot;Epyval&quot;),
+        plot.title = element_text(size = 37, face = &quot;italic&quot;, color = &quot;#ffbf00&quot;),
+        plot.subtitle = element_text(size = 16),
+        plot.caption = element_text(size = 13),
+        axis.title = element_blank()) +
+  guides(color = guide_legend(override.aes = list(size = 6, alpha = 1)),
+         size = guide_legend(override.aes = list(color = &quot;white&quot;))) #changes size of color legend, and sets alpha to 1
+
+finalfig</code></pre>
+<center>
+<img src = https://res.cloudinary.com/phillynerd/image/upload/v1566328364/finalfig_o7yul2.png>
+</center>
+<p><i> Cover Image: “Ivy Mike” atmospheric nuclear test - November 1952
+Ivy Mike (yield 10.4 mt) - an atmospheric nuclear test conducted by the U.S. at Enewetak Atoll on 1 November 1952. It was the world’s first successful hydrogen bomb. Sourced from <a href="https://www.flickr.com/photos/ctbto/6476282811">The Official CTBTO Photostream</a> </i></p>
+</div>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/data-visualization/">data visualization</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/ggplot/">ggplot</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/r/">r</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2019/05/an-introvert-s-guide-to-conferences/" data-tooltip="An Introvert&#39;s Guide to Conferences">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/08/atomic-bombs-and-you/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2019 Jessica Streeter. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2019/05/an-introvert-s-guide-to-conferences/" data-tooltip="An Introvert&#39;s Guide to Conferences">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/08/atomic-bombs-and-you/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2019%2F08%2Fatomic-bombs-and-you%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/jess.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Jessica Streeter</h4>
+    
+      <div id="about-card-bio">I&rsquo;m Jess, a trained medical sociologist who left academia and stumbled into a career as a data scientist. I&rsquo;m a self professed nerd of many things, including R, data visualization, craft beer, Game of Thrones, and Jiu Jitsu. I&rsquo;m happily enjoying my life in Philly with my wife, our son, and all our amazing puppies. All of my opinions are my own.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Data Scientist
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Philly
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/08/atomic-bombs-and-you/">
+                <h3 class="media-heading">Atomic Bombs and You</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">
+
+
+<hr />
+<p>The summer, as always, is a super-busy time for us. Not only is work crazy with state reporting and fiscal year reporting, but my wife and I are always running around trying to suck the most out of every nice day before we hibernate. Add a toddler to that equation, and you end up with exactly zero free time. Which, of course, means it’s been a while since my last post.<br />
+</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/05/an-introvert-s-guide-to-conferences/">
+                <h3 class="media-heading">An Introvert&#39;s Guide to Conferences</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  May 5, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">It’s a rainy Sunday here in NYC, and I have some time to reflect on the Lander Analytics RStatsNY conference I attended for the last few days. It was a whirlwind - tons of learning, laughs, shock and awe (redoc I’m looking at you), and of course a steady sprinkle of imposter syndrome and anxiety. I had an absolute blast, the survival analysis workshop was phenomenal and I’m already planning to trick my boss into sending me next year.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/04/lock-all-the-legs/">
+                <h3 class="media-heading">Lock all the legs!</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Welcome, friends, to my first data post! So here’s the background: I love brazilian jiu jitsu (bjj). I did martial arts when I was a kid (bonus story at the end about my favorite martial art moment ever), but stopped going after I had a knee injury that sidelined me for several months. I’d always toyed with the idea of going back, but my wife made me realize how much I actually missed sports when I saw her being crazy active with her HIIT gym.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2019/04/hello-world/">
+                <h3 class="media-heading">Finally! A Blog!</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Apr 4, 2019
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Well this took me way too long to get up and running! But here we are :) Hello, and welcome! Why another R blog?I’m starting this blog for a few reasons. First, I want to use it as a way to document my own R journey. I figured I’d document it for lots of reasons: a way to showcase my own work, career development, networking, everyone in the R community says you should do it, blah blah blah.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         4 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('https://res.cloudinary.com/phillynerd/image/upload/v1556209926/IMG_20180523_144459_bcsld6.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2019\/08\/atomic-bombs-and-you\/';
+          
+            this.page.identifier = '\/2019\/08\/atomic-bombs-and-you\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'https-phillynerd-netlify-com';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

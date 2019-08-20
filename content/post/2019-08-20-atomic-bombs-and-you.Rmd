@@ -1,0 +1,308 @@
+---
+title: Atomic Bombs and You
+author: ''
+date: '2019-08-20'
+slug: atomic-bombs-and-you
+categories:
+  - TidyTuesday
+tags:
+  - data visualization
+  - ggplot
+  - r
+keywords:
+  - tech
+  
+thumbnailImagePosition: right
+coverImage: https://res.cloudinary.com/phillynerd/image/upload/v1566327010/6476282811_7977dbbaa6_o_gvk3vk.jpg
+coverSize: full
+---
+
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = F)
+
+```
+
+The summer, as always, is a super-busy time for us.  Not only is work crazy with state reporting and fiscal year reporting, but my wife and I are always running around trying to suck the most out of every nice day before we hibernate.  Add a toddler to that equation, and you end up with exactly zero free time.  Which, of course, means it's been a while since my last post.  
+<!--more-->
+
+Today, I just wanted to take some time to walk through this week's TidyTuesday submission, since I'm pretty proud of this visualization, and I thought it would be cool to share not only the code, but my thought process behind the viz.
+
+For those of you who aren't familiar, TidyTuesday is a weekly online learning challenge on Twitter. @R4DSCommunity and @thomas_mock release a cool new dataset each week, along with some documentation, and you're free to do whatever you want with it. The data are usually pretty clean, so you can jump right in pretty quickly.  You can view all the TidyTuesday datasets to date [here](https://github.com/rfordatascience/tidytuesday).  And if you want to see prior submissions, you can check out this cool shiny app for it [here](https://nsgrantham.shinyapps.io/tidytuesdayrocks/) (designed by Neal Grantham).
+
+This week's data are from Stockholm International Peace Research Institute (SIPRI), and provide information on nuclear tests around the workd between 1945 and 1998.  
+
+# Getting Started
+
+## packages: skimr & visdat
+The first thing I like to do after I load in the data are some quick visualizations with skimr::skim and visdat::vis_data/visdat::vis_miss
+```{r initial work}
+library(tidyverse)
+library(skimr)
+library(visdat)
+library(lubridate)
+
+#reading in data
+NE_Raw <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-08-20/nuclear_explosions.csv")
+
+skimr::skim(NE_Raw)
+visdat::vis_dat(NE_Raw)
+visdat::vis_miss(NE_Raw)
+
+
+```
+
+I think of skim() as summary() on steroids.  It organizes your variables by type, and then gives you useful info like summary statistics, number of NA's, number of levels/unique values, variable types, etc.  It's a great first step, and usually gives me a solid starting point.  Plus, it even generates little histograms, which you can't see on the blog, but trust me they're cool.
+
+vis_dat() and vis_miss() both provide similar types of information, but in a quicker visual format.  I like vis_dat() for quickly seeing what I need to recast to different variable types, and vis_miss() adds the percent of NA's for each variable, which is always nice.
+
+After this first glimpse, I know a few things:
+
+1. I want to change the variable types for date_long, country, region, source, and type.
+2. A number of these new factors have a lot of different values, so I want to check the documentation to see what will be most useful.
+3. Since I want to use the average of yield_lower and yield_upper, I want to remove cases where yield_lower or yield_upper are NA. If one of the two are available, I could technically impute the value and go from there, but there are only 5 cases total, so it's not worth the effort for this exercise
+
+After I checked out the documentation (see the SIPRI pdf on the TidyTuesday github page), it seems like the region likely won't be useful to me - there are lots of different values (79) and I don't feel like sorting through those for a more condensed set of levels.  I'll still recode it anyway just in case I change my mind.  Same with source - there aren't many unique values (13), but I also don't find the variable too interesting.
+
+Type seems like it really focuses on 2 master categories: atmospheric detonations and underground detonations.  All subtypes, which include information like whether the test occurred from a barge, a balloon, or a mineshaft, map up to these two categories.  
+
+```{r}
+NE_Raw %>% 
+  count(type) %>% 
+  arrange(desc(n)) 
+
+```
+
+
+This finer grain detail doesn't seem as interesting to me - it adds a lot of nuance that I likely won't need, and it's not available for every type of detonation.  So I recoded all variables to either atmospheric or underground.  I also noticed that there is a category for space detonations, which isn't mentioned in the documentation but it seems pretty cool, so I made it it's own subgroup even though there are only a few cases for it (n=4).
+
+```{r}
+#Categorization based on the SIPRI documentation
+atm <- c("TOWER", "AIRDROP", "UW", "SURFACE", "CRATER", "SHIP", 
+         "ATMOSPH", "BALLOON", "ROCKET", "WATERSUR", 
+         "WATER SU", "BARGE")
+
+ug <- c("SHAFT", "MINE", "TUNNEL", "GALLERY", "UG", "SHAFT/GR", "SHAFT/LG")
+
+space <- "SPACE"
+
+#cleaning my data
+NEclean <- NE_Raw %>% 
+   mutate(date_long = ymd(date_long),
+         country = factor(country),
+         region = factor(region),
+         source = factor(source),
+         type = factor(type)) %>% 
+   mutate(typecat = case_when(type %in% atm ~ "Atmospheric",
+                             type %in% ug ~ "Underground",
+                             type %in% space ~ "Space")) %>%
+  filter(is.na(yield_lower) == F, is.na(yield_upper)==F) %>% 
+  mutate(AverageYield = (yield_lower + yield_upper)/2)
+  
+```
+
+
+# Figuring out what to plot
+Cool, we have clean data! Now let's start playing with some visualization.  The first thing I plotted was yield vs magnitude_body and magnitude_surface, just to confirm I wanted to use yield. Yield looks the most interesting, and the easiest to interpret, so I stuck with yield.  Plus, I read some stuff in the documentation about how governments can fudge the magnitude numbers by detonating in specific ways.
+
+Next, I wanted to see yield by country:
+```{r}
+NEclean %>% 
+  ggplot(aes(x = country, y = AverageYield)) +
+  geom_jitter()
+```
+
+
+This doesn't seem super interesting, and it looks like a lot of the yield is really low, hovering around zero. I double check this against a density plot of yield, which confirms it.  
+
+```{r}
+NEclean %>% 
+  ggplot(aes(x = AverageYield)) +
+  geom_density()
+```
+
+
+I still want to use yield, but it may be better mapped to size or color.
+
+Then I try country vs year, which looks much more promising.  In particular, I'm noticing that gap just before 1960, and then that really dense area right after 1960. I definitely want to see what's going on with both of these. 
+```{r}
+NEclean %>% 
+  ggplot(aes(x = year, y = country)) +
+  geom_jitter(alpha = .4)
+```
+
+For the next iteration, I add color for type, and size for yield.  I also opt to use coord_flip so i can set the jitter width (there is probably an easier way to do this, but it's what I knew how to do off the top of my head).  
+
+```{r}
+NEclean %>% 
+  ggplot(aes(x = country, y = year, size = AverageYield, color = typecat)) +
+  geom_jitter(alpha = .4, width = .2) +
+  coord_flip()
+```
+
+Not only are there lots of tests happening right after 1960, but there's also a huge spike in the size of the tests in that same time period.  Then there's this really clear divide in the type of testing as well.  I'm not sure how to explain all of this at this point, but I'm willing to bet it's a policy thing. Off to wikipedia!  The article on nuclear testing have a whole section on [treaties against testing](https://en.wikipedia.org/wiki/Nuclear_weapons_testing#Treaties_against_testing), and it looks like this explains a lot of what I'm seeing in the data.  So let's add it to our plot!
+
+# Making our plot fancy
+
+First up, let's add some lines and rectangles to denote important periods.  In particular, I'm interested in the bilateral agreement to stop testing, the Partial Nuclear Testing Ban Treaty, the Outer Space Treaty, and the two-year period where peak testing occurred by megatonnage (1961-62, mentioned in the same Wikipedia article).  I do this using annotate(geom = "rect") and geom_hline() functions.  I also made a few other small tweaks, including relabeling the countries on the axis, and setting up my color palette.
+
+```{r}
+basefig <- NEclean %>% 
+  ggplot(aes(x = country, y = year, size = AverageYield, color = typecat)) +
+  #peak nuclear explosions by megatonage (wikipedia:https://en.wikipedia.org/wiki/Nuclear_weapons_testing#History)
+  annotate(geom = "rect", 
+           xmin = -Inf, 
+           xmax = Inf, 
+           ymin = 1961, 
+           ymax = 1962, 
+           fill = "#03525E", 
+           alpha = .8) +
+  #USSR-US bilateral testing moratorium on testing 
+  annotate(geom = "rect", 
+           xmin = -Inf, 
+           xmax = Inf, 
+           ymin = 1958, 
+           ymax = 1961, 
+           fill = "#09c2de", 
+           alpha = .6) +
+  #Partial nuclear test ban treaty in effect, oct 10, 1963
+  geom_hline(yintercept = 1963, color = "#ffbb00", size = 1) + 
+  #outer space treaty
+  geom_hline(yintercept = 1967, color =  "#00ff44", size = 1) + 
+  geom_jitter(alpha = .4, width = .2) +
+  #sequence axis by 5 yr increments
+  scale_y_continuous(breaks = seq(min(NEclean$year), 
+                                  max(NEclean$year),  
+                                  5)) +
+  #set my pallette
+  scale_color_manual(values = c("#9e0c02", "#00ff44","#ffdd00")) +
+  #relabel countries on axis
+  scale_x_discrete(labels = c("PAKIST" = "Pakistan", 
+                              "INDIA" = "India", 
+                              "FRANCE" = "France", 
+                              "CHINA" = "China")) + 
+  coord_flip()
+
+basefig
+```
+
+When it came to selecting my color palette, since we're talking about nuclear bombs, I immediately thought of old-school atomic-age sci-fi movies.  The posters for these movies are fantastic, and often just use a few colors, with big fonts and awesome images of wonderfully-schlocky bad guys.  In particular, I pulled some colors off of the poster below, using [Image Color Picker](https://imagecolorpicker.com/), which lets you pick hex colors from an image you link to or upload. And I threw in just a little neon green because nuclear explosions require at least a little neon green.
+
+<center><img src = https://res.cloudinary.com/phillynerd/image/upload/v1566325230/ForbiddenPlanet_uoigf6.gif></center>
+
+Next up, let's explain what these extra lines and boxes are with some text annotations.  This is what I was most excited to test out, since I get way too excited when other people add text and arrows to their plots.  Here's the general principal: Add annotate(geom = "text") for your text, then use geom_curve() for your arrow.  You sometimes have to flip the sign of your curvature to get the arrow to bend the right way, but other than that, there's not much more to this.
+
+```{r}
+basefig +
+  #note and arrow for moratorium
+  annotate(geom = "text", x = 2, y = 1952, 
+           label = "USSR & US agree to\nbilateral testing moratorium",
+           size = 3.5, color = "black", family = "Gill Sans MT") +
+  geom_curve(aes(y = 1952, yend = 1959, x = 1.7, xend = 1.7), 
+             arrow = arrow(length = unit(0.07, "inch")), size = 0.7,
+             color = "black", curvature = 0.25) 
+```
+
+When it comes to figuring out where to place things on the plot, it's a bit of trial and error.  The text is usually easy enough to place - I just try to find an empty section of my plot, and then figure out the coordinates for it.  For the arrow, I just bumped it down a few decimal points from where the text is.  This ensures it's below the text.  Then I pumped it to the right of 1958 a bit so it fell in the light blue box. That's it! Fancy text and arrow annotations in a few lines!
+
+I did this several more times for all my annotations, and even added a little arrow for Hiroshima and Nagasaki (I would have loved to highlight them a bit more but wasn't sure how to approach it).  Smack some labels on this sucker using the labs() function, and we're almost done! I also made the text white here, bc I'm ultimately going to make the background dark.
+
+```{r}
+annotatefig <- basefig +
+  coord_flip() +
+  #note and arrow for moratorium
+  annotate(geom = "text", x = 2, y = 1952, 
+           label = "USSR & US agree to\nbilateral testing moratorium",
+           size = 3.5, color = "white", family = "Gill Sans MT") +
+  geom_curve(aes(y = 1952, yend = 1959, x = 1.7, xend = 1.7), 
+             arrow = arrow(length = unit(0.07, "inch")), size = 0.7,
+             color = "white", curvature = 0.25) +
+  # note and arrow for peak testing period
+  annotate(geom = "text", x = 4, y = 1957, 
+           label = "Period represents peak \ntesting by megatonage",
+           size = 3.5, color = "white", family = "Gill Sans MT") +
+  geom_curve(aes(y = 1957, yend = 1961.5, x = 3.7, xend = 3.7), 
+             arrow = arrow(length = unit(0.07, "inch")), size = 0.7,
+             color = "white", curvature = 0.25) +
+  # note and arrow for underground testing only
+  annotate(geom = "text", x = 5.5, y = 1972, 
+           label = "Partial Nuclear Test Ban Treaty\nlimits all testing to underground",
+           size = 3.5, color = "white", family = "Gill Sans MT") +
+  geom_curve(aes(y = 1972, yend = 1963, x = 5.2, xend = 5.2), 
+             arrow = arrow(length = unit(0.07, "inch")), size = 0.7,
+             color = "white", curvature = -0.25) +
+  # note and arrow for outer space treaty ban
+  annotate(geom = "text", x = 3, y = 1974, 
+           label = "Outer Space Treaty bans all testing\non the moon and other celestial bodies",
+           size = 3.5, color = "white", family = "Gill Sans MT") +
+  geom_curve(aes(y = 1974, yend = 1967, x = 2.7, xend = 2.7), 
+             arrow = arrow(length = unit(0.07, "inch")), size = 0.7,
+             color = "white", curvature = -0.25) +
+  # Hiroshima and nagasaki
+  annotate(geom = "text", x = 5, y = 1945, 
+           label = "Hiroshima &\nNagasaki",
+           size = 3.5, color = "white", family = "Gill Sans MT") +
+  geom_curve(aes(y = 1944.2, yend = 1944.6, x = 5.2, xend = 5.9), 
+             arrow = arrow(length = unit(0.07, "inch")), size = 0.7,
+             color = "white", curvature = -0.25) +
+  #plot labels
+  labs(title = "The Atomic Bomb and You",
+        subtitle = sprintf( "A Timeline of Nuclear Testing and Select Treaties: %s - %s", 
+                       min(NEclean$year), 
+                       max(NEclean$year)),
+       caption = "Data: SIPRI | Treaty Information: Wikipedia | Visualization: @phillynerd",
+       size = "Average Yield\n(Kilotons of TNT)",
+       color = "Testing Location") 
+
+annotatefig + theme_dark()
+```
+
+# Customizing the Theme
+
+## package: extrafont
+Now let's finish off with a custom theme. It's my first time messing with this many elements of a theme, and I can definitely see why people set up packages to store specific themes.  I tweaked most things here, to keep with our 1950's sci-fi feel.  In particular, I played around with the fonts using the extrafont package.  Extrafont combs your system for all .ttf fonts, and then imports them into R.  This allows for a lot more variety than the few fonts available in R. I used the [Epyval font](https://www.1001fonts.com/epyval-font.html), in case you want to fully replicate my figure.
+
+```{r, eval = F}
+install.packages("extrafont")
+
+library(extrafont)
+
+#imports all the fonts from your system, takes a few minutes
+extrafont::font_import()
+
+#loads the fonts into R
+loadfonts(device = "win")
+
+#confirms what fonts are available in R
+windowsFonts() #base function that ensures the above command worked
+fonts() #extrafont function that lists all your fonts
+```
+
+And here's the code for the finishing touches. In addition to messing with the fonts and colors, I found the last 2 lines of code to be the most useful.  The guides() command allowed me to change the size of the color legend widget, as well as their opacity, and it allowed me to set the size legend widget to a white fill.  Both of these make the legend much more readable.  The other nice trick I learned was legend.key = element_rect(fill = NA, color = NA), which removes the tiny boxes behind the legend widget. All of these are really useful when dealing with dark backgrounds
+```{r, eval = F}
+finalfig <- annotatefig +
+  theme(panel.grid = element_blank(),
+        panel.background = element_rect(fill = "gray20"),
+        panel.border = element_rect(color = "white", fill = NA),
+        plot.background  = element_rect(fill = "gray20"),
+        legend.background = element_rect(fill = "gray20"),
+        legend.text = element_text(color = "white", size = 10, family = "Epyval"),
+        legend.title = element_text(color = "#ffbf00", size = 14),
+        legend.position = "bottom",
+        legend.key = element_rect(fill = NA, color = NA), #removes little boxes behind legend widget
+        axis.text = element_text(color = "white", family = "Epyval", size = 12),
+        title = element_text(color = "white", family = "Epyval"),
+        plot.title = element_text(size = 37, face = "italic", color = "#ffbf00"),
+        plot.subtitle = element_text(size = 16),
+        plot.caption = element_text(size = 13),
+        axis.title = element_blank()) +
+  guides(color = guide_legend(override.aes = list(size = 6, alpha = 1)),
+         size = guide_legend(override.aes = list(color = "white"))) #changes size of color legend, and sets alpha to 1
+
+finalfig
+
+```
+<center> <img src = https://res.cloudinary.com/phillynerd/image/upload/v1566328364/finalfig_o7yul2.png></center>
+
+<i> Cover Image: "Ivy Mike" atmospheric nuclear test - November 1952 
+Ivy Mike (yield 10.4 mt) - an atmospheric nuclear test conducted by the U.S. at Enewetak Atoll on 1 November 1952. It was the world's first successful hydrogen bomb. Sourced from [The Official CTBTO Photostream](https://www.flickr.com/photos/ctbto/6476282811) </i>
